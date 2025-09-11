@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest House Occupancy Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Slide Container -->
+    <div class="w-full max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden">
+        <header class="bg-teal-700 text-white p-6">
+            <h1 class="text-3xl font-bold">Guest House Occupancy Report</h1>
+            <p class="text-teal-200 text-lg">Current Status & Historical Trends (Jan - May 2025)</p>
+        </header>
+
+        <main class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Current Occupancy Chart -->
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center">Current Occupancy by Block</h2>
+                <canvas id="occupancyChart"></canvas>
+                <div class="text-center mt-4">
+                    <p class="text-xl font-bold text-slate-800">Overall Occupancy: 92%</p>
+                    <p class="text-slate-500">(55 out of 60 flats occupied)</p>
+                </div>
+            </div>
+
+            <!-- Historical Trend Chart -->
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center">Monthly Check In & Out Trend</h2>
+                <canvas id="trendChart"></canvas>
+                <div class="text-center mt-4">
+                     <p class="text-slate-500">Check In & Out has declined from a high of 94% in January to 50% in May.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="px-6 md:px-8 pb-6">
+            <div class="bg-slate-100 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-slate-700 mb-2">Key Observations & Discussion</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-slate-600">
+                    <div>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span><strong>High Current Utilization:</strong> The guest house is currently at a very high 92% occupancy rate, with Blocks A-1, A-2, and B being completely full.</span>
+                            </li>
+                             <li class="flex items-start">
+                                <svg class="w-5 h-5 text-blue-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <span><strong>Declining Trend:</strong> Despite the high current rate, the check in and out rate shows a sharp and consistent decline from 94% in January to just 50% in May.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-800">What factors contributed to the steep drop in check in and out rate from March to May? Understanding this trend is crucial for forecasting future demand and optimizing guest house management.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Current Occupancy Chart
+        const occupancyCtx = document.getElementById('occupancyChart').getContext('2d');
+        new Chart(occupancyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['A-1 Block', 'A-2 Block', 'B-Block', 'D-Block'],
+                datasets: [
+                    {
+                        label: 'Filled',
+                        data: [12, 13, 12, 18],
+                        backgroundColor: '#2dd4bf', // Teal
+                    },
+                    {
+                        label: 'Vacant',
+                        data: [0, 0, 0, 5],
+                        backgroundColor: '#e2e8f0', // Slate
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true }
+                }
+            }
+        });
+
+        // Historical Trend Chart
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Average Occupancy %',
+                    data: [94, 86, 60, 61, 50],
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: (value) => `${value}%`
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
