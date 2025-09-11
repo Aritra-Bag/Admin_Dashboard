@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Recovery Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Slide Container -->
+    <div class="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden">
+        <header class="bg-teal-800 text-white p-6">
+            <h1 class="text-3xl font-bold">Canteen Recovery Analysis</h1>
+            <p class="text-teal-200 text-lg">May - August 2025</p>
+        </header>
+
+        <main class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Chart Section -->
+            <div class="bg-slate-50 p-6 rounded-lg flex flex-col">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center">Monthly Recovery by Canteen</h2>
+                <div class="relative flex-grow min-h-[400px]">
+                    <canvas id="recoveryChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Key Insights Section -->
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 border-b-2 border-slate-200 pb-2">Key Observations</h2>
+                <ul class="space-y-4 text-slate-600">
+                    <li class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        <div>
+                            <strong>New Recovery High:</strong> Total recovery reached a new peak of ₹2.81M in August, surpassing the previous high in June.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div>
+                            <strong>Sustained Growth:</strong> 'Labour Housing2 RML6' continues its impressive upward trend, with recovery growing by another 23% from July to August.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                         <svg class="w-6 h-6 text-yellow-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m-15.357-2a8.001 8.001 0 0115.357-2m0 0H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        <div>
+                            <strong>Major Rebound:</strong> After a consistent decline, 'RML1 DIP Canteen' saw a significant recovery rebound of over 61% in August, returning to near-May levels.
+                        </div>
+                    </li>
+                     <li class="flex items-start">
+                        <svg class="w-6 h-6 text-purple-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                        <div>
+                            <strong>Primary Contributor:</strong> 'Seamless Canteen' remains the dominant source of recovery, consistently providing over 41% of the total each month.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </main>
+        
+        <footer class="bg-slate-100 p-6">
+             <h3 class="text-xl font-semibold text-slate-700 mb-2">Discussion Point</h3>
+             <p class="text-slate-600">Some operational changes led to the dramatic rebound for 'RML1 DIP Canteen' in August.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data derived from the Canteen.csv analysis
+        const recoveryData = {
+            labels: ['May-25', 'Jun-25', 'Jul-25', 'Aug-25'],
+            datasets: [
+                {
+                    label: 'FITTINGS CANTEEN',
+                    data: [382031, 358521, 367560, 310415],
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)', // Blue
+                },
+                {
+                    label: 'LABOUR HOUSING2 RML6',
+                    data: [387132, 542286, 592367, 731610],
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)', // Green
+                },
+                {
+                    label: 'RML1 DIP CANTEEN',
+                    data: [586309, 474220, 368495, 593581],
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)', // Red
+                },
+                {
+                    label: 'SEAMLESS CANTEEN',
+                    data: [1022125, 1257483, 1160703, 1167572],
+                    backgroundColor: 'rgba(255, 206, 86, 0.7)', // Yellow
+                },
+                {
+                    label: 'RML3 GUEST HOUSE',
+                    data: [19926, 19463, 14991, 10542],
+                    backgroundColor: 'rgba(153, 102, 255, 0.7)', // Purple
+                }
+            ]
+        };
+
+        // Chart configuration for a stacked bar chart
+        const config = {
+            type: 'bar',
+            data: recoveryData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += '₹' + context.parsed.y.toLocaleString('en-IN');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 1000000) {
+                                    return '₹' + (value / 1000000).toFixed(1) + 'M';
+                                } else if (value >= 1000) {
+                                    return '₹' + (value / 1000) + 'K';
+                                }
+                                return '₹' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Render the chart
+        const ctx = document.getElementById('recoveryChart').getContext('2d');
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>
