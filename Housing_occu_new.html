@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Housing Occupancy Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #0e7490; /* A darker cyan */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Slide Container -->
+    <div class="w-full max-w-6xl bg-white rounded-xl shadow-lg overflow-hidden">
+        <header class="bg-cyan-900 text-white p-6">
+            <h1 class="text-3xl font-bold">Housing Complex Occupancy Report</h1>
+            <p class="text-cyan-200 text-lg">Current Utilization Across All Facilities</p>
+        </header>
+        
+        <!-- Toggle Buttons -->
+        <div class="p-6 bg-cyan-800 flex justify-center space-x-2">
+            <button id="showRoomsBtn" class="tab-btn active text-white font-semibold py-2 px-6 rounded-lg" onclick="switchView('rooms')">Room Occupancy</button>
+            <button id="showHeadsBtn" class="tab-btn text-cyan-200 font-semibold py-2 px-6 rounded-lg" onclick="switchView('heads')">Headcount Occupancy</button>
+        </div>
+
+        <!-- Room Data View -->
+        <main id="roomsView" class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <!-- Key Insights & Overall Occupancy -->
+            <div class="lg:col-span-2 bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 border-b-2 border-slate-200 pb-2">Room Insights</h2>
+                <div class="text-center mb-6">
+                    <p class="text-6xl font-bold text-cyan-800">86%</p>
+                    <p class="text-slate-600 text-lg">Overall Room Occupancy</p>
+                    <p class="text-slate-500">(576 out of 666 rooms occupied)</p>
+                </div>
+                <ul class="space-y-4 text-slate-600">
+                    <li class="flex items-start">
+                        <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        <div>
+                            <strong>Critical Capacity:</strong> 'Gate-2 Hutment' and 'Oxygen Plant' have almost no vacant rooms (1 and 2 available, respectively).
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div>
+                            <strong>Substantial Availability:</strong> 'Housing-1' has the most room availability (60 rooms), followed by 'Housing-2' (27 rooms).
+                        </div>
+                    </li>
+                     <li class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h.01M12 7h.01M16 7h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z"></path></svg>
+                        <div>
+                            <strong>Total Vacancy:</strong> Across all complexes, there are 90 rooms currently available for assignment.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Occupancy by Location Chart -->
+            <div class="lg:col-span-3 bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center">Room Breakdown by Location</h2>
+                <canvas id="occupancyChartRooms"></canvas>
+            </div>
+        </main>
+        
+        <!-- Headcount Data View -->
+        <main id="headsView" class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-8" style="display: none;">
+             <!-- Key Insights & Overall Occupancy -->
+            <div class="lg:col-span-2 bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 border-b-2 border-slate-200 pb-2">Headcount Insights</h2>
+                <div class="text-center mb-6">
+                    <p class="text-6xl font-bold text-cyan-800">67%</p>
+                    <p class="text-slate-600 text-lg">Overall Personnel Occupancy</p>
+                    <p class="text-slate-500">(5,150 out of 7,709 capacity filled)</p>
+                </div>
+                <ul class="space-y-4 text-slate-600">
+                    <li class="flex items-start">
+                        <svg class="w-6 h-6 text-yellow-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <div>
+                            <strong>High Density:</strong> 'Gate-2 Hutment' has the highest density with 2,533 personnel, followed by 'Housing-2' with 1,048.
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <div>
+                            <strong>Largest Growth Capacity:</strong> 'Housing-1' can accommodate an additional 1,156 people, representing the largest capacity for future allocation.
+                        </div>
+                    </li>
+                     <li class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h.01M12 7h.01M16 7h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z"></path></svg>
+                        <div>
+                            <strong>Total Availability:</strong> In total, there is space for an additional 2,559 people across all facilities.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Occupancy by Location Chart -->
+            <div class="lg:col-span-3 bg-slate-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center">Headcount Breakdown by Location</h2>
+                <canvas id="occupancyChartHeads"></canvas>
+            </div>
+        </main>
+
+        <footer class="px-6 md:px-8 pb-6">
+            <div class="bg-slate-100 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-slate-700 mb-2">Strategic Point</h3>
+                <p id="strategicQuestion" class="text-slate-600">With 90 rooms available (mostly in Housing-1), our strategy for utilizing this physical space will be allocating for upcoming projects, or  repurposed to alleviate pressure on facilities near full room capacity.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const roomData = {
+            labels: ['Housing-1', 'Housing-2', 'Gate-2 Hutment', 'Oxygen Plant'],
+            occupied: [122, 114, 265, 75],
+            available: [60, 27, 1, 2]
+        };
+
+        const headData = {
+            labels: ['Housing-1', 'Housing-2', 'Gate-2 Hutment', 'Oxygen Plant'],
+            occupied: [1028, 1048, 2533, 541],
+            available: [1156, 362, 658, 383]
+        };
+
+        const chartOptions = {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } },
+            scales: {
+                x: { stacked: true, grid: { display: false } },
+                y: { stacked: true, beginAtZero: true, grid: { color: '#e2e8f0' } }
+            }
+        };
+
+        // Chart for Rooms
+        const occupancyCtxRooms = document.getElementById('occupancyChartRooms').getContext('2d');
+        const roomChart = new Chart(occupancyCtxRooms, {
+            type: 'bar',
+            data: {
+                labels: roomData.labels,
+                datasets: [
+                    { label: 'Occupied', data: roomData.occupied, backgroundColor: '#06b6d4' },
+                    { label: 'Available', data: roomData.available, backgroundColor: '#cbd5e1' }
+                ]
+            },
+            options: chartOptions
+        });
+        
+        // Chart for Heads
+        const occupancyCtxHeads = document.getElementById('occupancyChartHeads').getContext('2d');
+        const headChart = new Chart(occupancyCtxHeads, {
+            type: 'bar',
+            data: {
+                labels: headData.labels,
+                datasets: [
+                    { label: 'Occupied', data: headData.occupied, backgroundColor: '#06b6d4' },
+                    { label: 'Available', data: headData.available, backgroundColor: '#cbd5e1' }
+                ]
+            },
+            options: chartOptions
+        });
+
+        const strategicQuestions = {
+            rooms: "There are 90 rooms available (mostly in Housing-1) that can either be allocated for upcoming projects or repurposed to alleviate pressure on facilities nearing full capacity.",
+            heads: "There is capacity for over 2,500 additional personnel (primarily in Housing-1), which can support future headcount growth through either team consolidation or space reservation for large-scale recruitment."
+        };
+
+        // View Switching Logic
+        function switchView(view) {
+            const roomsView = document.getElementById('roomsView');
+            const headsView = document.getElementById('headsView');
+            const showRoomsBtn = document.getElementById('showRoomsBtn');
+            const showHeadsBtn = document.getElementById('showHeadsBtn');
+            const strategicQuestionEl = document.getElementById('strategicQuestion');
+
+            if (view === 'rooms') {
+                roomsView.style.display = 'grid';
+                headsView.style.display = 'none';
+                showRoomsBtn.classList.add('active');
+                showHeadsBtn.classList.remove('active');
+                strategicQuestionEl.textContent = strategicQuestions.rooms;
+            } else {
+                roomsView.style.display = 'none';
+                headsView.style.display = 'grid';
+                showRoomsBtn.classList.remove('active');
+                showHeadsBtn.classList.add('active');
+                strategicQuestionEl.textContent = strategicQuestions.heads;
+            }
+        }
+    </script>
+</body>
+</html>
