@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Recovery Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Main Container -->
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-gradient-to-r from-teal-700 to-teal-900 text-white p-6">
+            <h1 class="text-3xl font-extrabold tracking-tight">Canteen Recovery Dashboard</h1>
+            <p class="text-teal-200 text-lg mt-1">Performance Analysis: May - August 2025</p>
+        </header>
+
+        <main class="p-6 md:p-8">
+            <!-- KPIs Section -->
+            <section id="kpis" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Total Recovery</h3>
+                    <p class="text-teal-600 text-4xl font-bold mt-2">₹1.04Cr</p>
+                    <p class="text-slate-400">Across all canteens (May-Aug)</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Top Performing Canteen</h3>
+                    <p class="text-teal-600 text-4xl font-bold mt-2">Seamless</p>
+                    <p class="text-slate-400">₹46.1L total contribution</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Peak Recovery Month</h3>
+                    <p class="text-teal-600 text-4xl font-bold mt-2">August</p>
+                    <p class="text-slate-400">Reached a high of ₹28.1L</p>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Area: now a single column grid -->
+            <section class="grid grid-cols-1 gap-8">
+                <!-- Chart & Insights -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Monthly Recovery Breakdown</h2>
+                    <div class="relative h-[450px]">
+                        <canvas id="recoveryChart"></canvas>
+                    </div>
+                     <div class="mt-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Key Observations</h3>
+                        <ul class="space-y-3 text-slate-600">
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">▲</span><strong>Sustained Growth:</strong> 'Labour Housing2' shows impressive, consistent growth, increasing recovery by over 89% from May to August.</li>
+                            <li class="flex items-start"><span class="text-yellow-500 mr-3 mt-1">⟷</span><strong>Major Rebound:</strong> After a sharp decline, 'RML1 DIP Canteen' recovery bounced back by 61% in August.</li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">●</span><strong>Dominant Contributor:</strong> 'Seamless Canteen' remains the largest source of recovery, contributing 44% of the total revenue.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Data Table Section -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Detailed Recovery Data (in ₹)</h2>
+                    <div class="table-container">
+                        <table class="w-full text-left text-slate-600">
+                            <thead class="text-sm text-slate-700 uppercase bg-slate-200 sticky top-0">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3">Canteen</th>
+                                    <th scope="col" class="px-4 py-3 text-right">May</th>
+                                    <th scope="col" class="px-4 py-3 text-right">June</th>
+                                    <th scope="col" class="px-4 py-3 text-right">July</th>
+                                    <th scope="col" class="px-4 py-3 text-right">August</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="hover:bg-slate-100">
+                                    <td class="px-4 py-3 font-medium">FITTINGS</td>
+                                    <td class="px-4 py-3 text-right">382,031</td>
+                                    <td class="px-4 py-3 text-right">358,521</td>
+                                    <td class="px-4 py-3 text-right">367,560</td>
+                                    <td class="px-4 py-3 text-right">310,415</td>
+                                </tr>
+                                <tr class="hover:bg-slate-100">
+                                    <td class="px-4 py-3 font-medium">LABOUR HOUSING2</td>
+                                    <td class="px-4 py-3 text-right">387,132</td>
+                                    <td class="px-4 py-3 text-right">542,286</td>
+                                    <td class="px-4 py-3 text-right">592,367</td>
+                                    <td class="px-4 py-3 text-right">731,610</td>
+                                </tr>
+                                <tr class="hover:bg-slate-100">
+                                    <td class="px-4 py-3 font-medium">RML1 DIP</td>
+                                    <td class="px-4 py-3 text-right">586,309</td>
+                                    <td class="px-4 py-3 text-right">474,220</td>
+                                    <td class="px-4 py-3 text-right">368,495</td>
+                                    <td class="px-4 py-3 text-right">593,581</td>
+                                </tr>
+                                <tr class="hover:bg-slate-100">
+                                    <td class="px-4 py-3 font-medium">SEAMLESS</td>
+                                    <td class="px-4 py-3 text-right">1,022,125</td>
+                                    <td class="px-4 py-3 text-right">1,257,483</td>
+                                    <td class="px-4 py-3 text-right">1,160,703</td>
+                                    <td class="px-4 py-3 text-right">1,167,572</td>
+                                </tr>
+                                 <tr class="hover:bg-slate-100">
+                                    <td class="px-4 py-3 font-medium">RML3 GUEST HOUSE</td>
+                                    <td class="px-4 py-3 text-right">19,926</td>
+                                    <td class="px-4 py-3 text-right">19,463</td>
+                                    <td class="px-4 py-3 text-right">14,991</td>
+                                    <td class="px-4 py-3 text-right">10,542</td>
+                                </tr>
+                                <tr class="bg-slate-200 font-bold text-slate-800">
+                                    <td class="px-4 py-3">TOTAL</td>
+                                    <td class="px-4 py-3 text-right">2,397,523</td>
+                                    <td class="px-4 py-3 text-right">2,651,973</td>
+                                    <td class="px-4 py-3 text-right">2,504,116</td>
+                                    <td class="px-4 py-3 text-right">2,813,720</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                        <h3 class="text-xl font-bold text-slate-800">Strategic Insight</h3>
+                        <p class="text-slate-600 mt-2">The 61% rebound for RML1 DIP Canteen and the sustained growth for Labour Housing 2 were driven by specific operational changes, and these strategies demonstrate potential for replication across other facilities.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const recoveryData = {
+            labels: ['May-25', 'Jun-25', 'Jul-25', 'Aug-25'],
+            datasets: [
+                { label: 'FITTINGS CANTEEN', data: [382031, 358521, 367560, 310415], backgroundColor: '#38bdf8' }, // sky-400
+                { label: 'LABOUR HOUSING2 RML6', data: [387132, 542286, 592367, 731610], backgroundColor: '#34d399' }, // emerald-400
+                { label: 'RML1 DIP CANTEEN', data: [586309, 474220, 368495, 593581], backgroundColor: '#f87171' }, // red-400
+                { label: 'SEAMLESS CANTEEN', data: [1022125, 1257483, 1160703, 1167572], backgroundColor: '#fbbf24' }, // amber-400
+                { label: 'RML3 GUEST HOUSE', data: [19926, 19463, 14991, 10542], backgroundColor: '#a78bfa' } // violet-400
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: recoveryData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    // Changed from 'index' to 'point' to show individual tooltips on hover
+                    mode: 'point',
+                    intersect: true,
+                },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ₹${context.parsed.y.toLocaleString('en-IN')}`
+                        }
+                    }
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        grid: { color: '#e2e8f0' },
+                        ticks: {
+                            callback: (value) => {
+                                if (value >= 1000000) return `₹${(value / 1000000).toFixed(1)}M`;
+                                if (value >= 1000) return `₹${(value / 1000)}K`;
+                                return `₹${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const ctx = document.getElementById('recoveryChart').getContext('2d');
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>
+
