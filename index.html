@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Department Dashboard - Rashmi Metaliks Ltd.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link.active {
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .nav-link:hover {
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #3b82f6;
+            border-radius: 2px 2px 0 0;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .toggle-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+        }
+        
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100vh;
+            background: white;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg border-b">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Admin Department</h1>
+                        <p class="text-gray-600">Rashmi Metaliks Ltd.</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Last Updated</p>
+                        <p class="font-semibold text-gray-900" id="lastUpdated"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-8 overflow-x-auto">
+                <button onclick="showSection('home')" class="nav-link active px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Home
+                </button>
+                <button onclick="showSection('corporate')" class="nav-link px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Corporate Occupancy
+                </button>
+                <button onclick="showSection('guesthouse')" class="nav-link px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Guest House
+                </button>
+                <button onclick="showSection('housing')" class="nav-link px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Housing Occupancy
+                </button>
+                <button onclick="showSection('travel')" class="nav-link px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Travel
+                </button>
+                <button onclick="showSection('canteen')" class="nav-link px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Canteen
+                </button>
+                <button onclick="showSection('admin')" class="nav-link px-4 py-4 text-sm font-medium whitespace-nowrap">
+                    Admin
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <!-- Home Section -->
+        <div id="home" class="content-section active">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h2>
+                <p class="text-gray-600">Real-time insights into administrative operations and resource management</p>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card">
+                    <div class="metric-value">92%</div>
+                    <div class="metric-label">Guest House Occupancy</div>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="metric-value">₹2.30Cr</div>
+                    <div class="metric-label">Monthly Admin Expense</div>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="metric-value">86%</div>
+                    <div class="metric-label">Housing Room Occupancy</div>
+                </div>
+                <div class="metric-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <div class="metric-value">₹28.1L</div>
+                    <div class="metric-label">Canteen Recovery</div>
+                </div>
+            </div>
+
+            <!-- Overview Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                <!-- Corporate Occupancy Card -->
+                <div class="card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Corporate Occupancy</h3>
+                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <div class="chart-container mb-4">
+                        <canvas id="corporateChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">57% workstation availability presents optimization opportunities for space consolidation and future growth planning.</p>
+                    <button onclick="showSection('corporate')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        View Details
+                    </button>
+                </div>
+
+                <!-- Guest House Card -->
+                <div class="card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Guest House</h3>
+                        <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </div>
+                    <div class="chart-container mb-4">
+                        <canvas id="guestHouseChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">High occupancy rate with excellent guest satisfaction. ₹7.26 Lakhs recovered through deductions with 99% satisfaction rate.</p>
+                    <button onclick="showSection('guesthouse')" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        View Details
+                    </button>
+                </div>
+
+                <!-- Housing Occupancy Card -->
+                <div class="card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Housing Complex</h3>
+                        <svg class="w-8 h-8 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.28-1.25-1.44-1.654M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.28-1.25 1.44-1.654M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 0c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"></path>
+                        </svg>
+                    </div>
+                    <div class="chart-container mb-4">
+                        <canvas id="housingChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">86% room occupancy with capacity for 2,559 additional personnel. Strategic allocation opportunities available.</p>
+                    <button onclick="showSection('housing')" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        View Details
+                    </button>
+                </div>
+
+                <!-- Travel Card -->
+                <div class="card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Travel Management</h3>
+                        <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </div>
+                    <div class="chart-container mb-4">
+                        <canvas id="travelChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Implemented cost control measures including standardized booking process and strategic hotel partnerships.</p>
+                    <div class="flex space-x-2">
+                        <button onclick="showSection('travel')" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            View Details
+                        </button>
+                        <a href="https://rego-dashboard.vercel.app/rego" target="_blank" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-3 rounded-lg transition-colors text-sm text-center">
+                            Rego Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Canteen Card -->
+                <div class="card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Canteen Operations</h3>
+                        <svg class="w-8 h-8 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01"></path>
+                        </svg>
+                    </div>
+                    <div class="chart-container mb-4">
+                        <canvas id="canteenChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Recovery reached ₹28.1Lakhs in August. Seamless Canteen contributes 41% of total recovery consistently.</p>
+                    <button onclick="showSection('canteen')" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        View Details
+                    </button>
+                </div>
+
+                <!-- Admin Card -->
+                <div class="card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold text-gray-900">Admin Operations</h3>
+                        <svg class="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="chart-container mb-4">
+                        <canvas id="adminChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">Monthly expenses stable at ₹2.30Cr with REGO ETS and Canteen as top cost drivers. Future CAPEX planned at ₹93.3L.</p>
+                    <button onclick="showSection('admin')" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Corporate Occupancy Section -->
+        <div id="corporate" class="content-section">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <h2 class="text-2xl font-bold text-gray-900">Corporate Office Occupancy Analysis</h2>
+                    <p class="text-gray-600">Current space utilization and optimization opportunities</p>
+                </div>
+                <iframe src="Corporate_excel.html"></iframe>
+            </div>
+        </div>
+
+        <!-- Guest House Section -->
+        <div id="guesthouse" class="content-section">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Guest House Management</h2>
+                            <p class="text-gray-600">Occupancy analysis and guest feedback overview</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button id="ghOccupancyBtn" onclick="switchGuestHouse('occupancy')" class="toggle-btn active px-4 py-2 rounded-lg font-medium">
+                                Occupancy
+                            </button>
+                            <button id="ghFeedbackBtn" onclick="switchGuestHouse('feedback')" class="toggle-btn px-4 py-2 rounded-lg font-medium">
+                                Recovery & Feedback
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <iframe id="ghOccupancyFrame" src="GH_occu.html"></iframe>
+                <iframe id="ghFeedbackFrame" src="GH_deduc_feed.html" style="display: none;"></iframe>
+            </div>
+        </div>
+
+        <!-- Housing Occupancy Section -->
+        <div id="housing" class="content-section">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <h2 class="text-2xl font-bold text-gray-900">Housing Complex Occupancy</h2>
+                    <p class="text-gray-600">Comprehensive analysis of housing facilities utilization</p>
+                </div>
+                <iframe src="Housing_occu_new.html"></iframe>
+            </div>
+        </div>
+
+        <!-- Travel Section -->
+        <div id="travel" class="content-section">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Travel Management & Cost Control</h2>
+                            <p class="text-gray-600">Expense analysis and optimization initiatives</p>
+                        </div>
+                        <a href="https://rego-dashboard.vercel.app/rego" target="_blank" 
+                           class="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
+                            <span>Rego Dashboard</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <iframe src="Travel_Analysis.html"></iframe>
+            </div>
+        </div>
+
+        <!-- Canteen Section -->
+        <div id="canteen" class="content-section">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <h2 class="text-2xl font-bold text-gray-900">Canteen Recovery Analysis</h2>
+                    <p class="text-gray-600">Monthly recovery trends across all canteen facilities</p>
+                </div>
+                <iframe src="Canteen_excel.html"></iframe>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="admin" class="content-section">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Admin Operations Management</h2>
+                            <p class="text-gray-600">Expense analysis, target tracking, and future planning</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button id="adminExpenseBtn" onclick="switchAdmin('expense')" class="toggle-btn active px-4 py-2 rounded-lg font-medium text-sm">
+                                Expenses
+                            </button>
+                            <button id="adminTargetBtn" onclick="switchAdmin('target')" class="toggle-btn px-4 py-2 rounded-lg font-medium text-sm">
+                                Target vs Achieve
+                            </button>
+                            <button id="adminPlanBtn" onclick="switchAdmin('plan')" class="toggle-btn px-4 py-2 rounded-lg font-medium text-sm">
+                                Future Plans
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <iframe id="adminExpenseFrame" src="Admin_Expense_L.html"></iframe>
+                <iframe id="adminTargetFrame" src="Target_Achieve.html" style="display: none;"></iframe>
+                <iframe id="adminPlanFrame" src="Future_plan.html" style="display: none;"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+            
+            // Initialize home charts
+            initializeHomeCharts();
+        });
+
+        // Navigation function
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+        }
+
+        // Guest House toggle function
+        function switchGuestHouse(view) {
+            const occupancyBtn = document.getElementById('ghOccupancyBtn');
+            const feedbackBtn = document.getElementById('ghFeedbackBtn');
+            const occupancyFrame = document.getElementById('ghOccupancyFrame');
+            const feedbackFrame = document.getElementById('ghFeedbackFrame');
+            
+            if (view === 'occupancy') {
+                occupancyBtn.classList.add('active');
+                feedbackBtn.classList.remove('active');
+                occupancyFrame.style.display = 'block';
+                feedbackFrame.style.display = 'none';
+            } else {
+                feedbackBtn.classList.add('active');
+                occupancyBtn.classList.remove('active');
+                feedbackFrame.style.display = 'block';
+                occupancyFrame.style.display = 'none';
+            }
+        }
+
+        // Admin toggle function
+        function switchAdmin(view) {
+            const expenseBtn = document.getElementById('adminExpenseBtn');
+            const targetBtn = document.getElementById('adminTargetBtn');
+            const planBtn = document.getElementById('adminPlanBtn');
+            const expenseFrame = document.getElementById('adminExpenseFrame');
+            const targetFrame = document.getElementById('adminTargetFrame');
+            const planFrame = document.getElementById('adminPlanFrame');
+            
+            // Remove active from all buttons
+            [expenseBtn, targetBtn, planBtn].forEach(btn => btn.classList.remove('active'));
+            
+            // Hide all frames
+            [expenseFrame, targetFrame, planFrame].forEach(frame => frame.style.display = 'none');
+            
+            // Show selected view
+            if (view === 'expense') {
+                expenseBtn.classList.add('active');
+                expenseFrame.style.display = 'block';
+            } else if (view === 'target') {
+                targetBtn.classList.add('active');
+                targetFrame.style.display = 'block';
+            } else if (view === 'plan') {
+                planBtn.classList.add('active');
+                planFrame.style.display = 'block';
+            }
+        }
+
+        // Initialize home page charts
+        function initializeHomeCharts() {
+            // Corporate Chart (Donut for occupancy)
+            const corporateCtx = document.getElementById('corporateChart').getContext('2d');
+            new Chart(corporateCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Occupied', 'Available'],
+                    datasets: [{
+                        data: [344, 454],
+                        backgroundColor: ['#3b82f6', '#e5e7eb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '70%'
+                }
+            });
+
+            // Guest House Chart (Bar for occupancy by block)
+            const guestHouseCtx = document.getElementById('guestHouseChart').getContext('2d');
+            new Chart(guestHouseCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['A-1', 'A-2', 'B', 'D'],
+                    datasets: [{
+                        data: [12, 13, 12, 18],
+                        backgroundColor: '#8b5cf6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Housing Chart (Stacked bar)
+            const housingCtx = document.getElementById('housingChart').getContext('2d');
+            new Chart(housingCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Housing-1', 'Housing-2', 'Gate-2', 'Oxygen'],
+                    datasets: [
+                        {
+                            label: 'Occupied',
+                            data: [122, 114, 265, 75],
+                            backgroundColor: '#06b6d4'
+                        },
+                        {
+                            label: 'Available',
+                            data: [60, 27, 1, 2],
+                            backgroundColor: '#cbd5e1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { stacked: true, grid: { display: false } },
+                        y: { stacked: true, beginAtZero: true, grid: { display: false } }
+                    }
+                }
+            });
+
+            // Travel Chart (Line chart for monthly trend)
+            const travelCtx = document.getElementById('travelChart').getContext('2d');
+            new Chart(travelCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        data: [7.09, 4.99, 9.34, 5.32, 5.28, 5.99],
+                        borderColor: '#0891b2',
+                        backgroundColor: 'rgba(8, 145, 178, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Canteen Chart (Stacked bar for recovery)
+            const canteenCtx = document.getElementById('canteenChart').getContext('2d');
+            new Chart(canteenCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['May', 'Jun', 'Jul', 'Aug'],
+                    datasets: [
+                        {
+                            label: 'Seamless',
+                            data: [1.02, 1.26, 1.16, 1.17],
+                            backgroundColor: '#14b8a6'
+                        },
+                        {
+                            label: 'Others',
+                            data: [1.36, 1.37, 1.35, 1.64],
+                            backgroundColor: '#a3a3a3'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { stacked: true, grid: { display: false } },
+                        y: { stacked: true, beginAtZero: true, grid: { display: false } }
+                    }
+                }
+            });
+
+            // Admin Chart (Line chart for monthly expenses)
+            const adminCtx = document.getElementById('adminChart').getContext('2d');
+            new Chart(adminCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jun', 'Jul', 'Aug'],
+                    datasets: [{
+                        data: [2.31, 2.16, 2.30],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
