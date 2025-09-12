@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corporate Office Occupancy Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .kpi-card {
+        transition: all 0.3s ease;
+      }
+      .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Main Container -->
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <header class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6">
+        <h1 class="text-3xl font-extrabold tracking-tight">
+          Corporate Occupancy & Utilization Dashboard
+        </h1>
+        <p class="text-slate-300 text-lg mt-1">
+          A Comprehensive Analysis of Space Allocation
+        </p>
+      </header>
+
+      <main class="p-6 md:p-8">
+        <!-- KPIs Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+            <h3 class="text-slate-500 font-semibold text-lg">
+              Overall Occupancy
+            </h3>
+            <p class="text-indigo-600 text-5xl font-bold mt-2">43%</p>
+            <p class="text-slate-400">344 of 798 Workstations</p>
+          </div>
+          <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+            <h3 class="text-slate-500 font-semibold text-lg">
+              Available Workstations
+            </h3>
+            <p class="text-indigo-600 text-5xl font-bold mt-2">454</p>
+            <p class="text-slate-400">57% of Total Capacity</p>
+          </div>
+          <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+            <h3 class="text-slate-500 font-semibold text-lg">Cabin Utilization</h3>
+            <p class="text-indigo-600 text-5xl font-bold mt-2">62%</p>
+            <p class="text-slate-400">46 of 74 Cabins Occupied</p>
+          </div>
+          <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+            <h3 class="text-slate-500 font-semibold text-lg">Highest Occupancy</h3>
+            <p class="text-indigo-600 text-5xl font-bold mt-2">67%</p>
+            <p class="text-slate-400">Ground Floor Workstations</p>
+          </div>
+        </section>
+
+        <!-- Main Chart Grid -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <!-- Left Column: Inventory & Common Areas -->
+          <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col">
+             <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Assignable Space Overview</h2>
+             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+                 <div class="text-center">
+                     <h4 class="text-lg font-semibold text-slate-600 mb-2">Workstations</h4>
+                     <div class="relative h-48 mx-auto"><canvas id="workstationChart"></canvas></div>
+                     <p class="mt-3 text-slate-500"><strong class="text-slate-700">454</strong> Available of <strong>798</strong> Total</p>
+                 </div>
+                 <div class="text-center">
+                     <h4 class="text-lg font-semibold text-slate-600 mb-2">Cabins</h4>
+                     <div class="relative h-48 mx-auto"><canvas id="cabinChart"></canvas></div>
+                     <p class="mt-3 text-slate-500"><strong class="text-slate-700">28</strong> Available of <strong>74</strong> Total</p>
+                 </div>
+             </div>
+          </div>
+          <!-- Right Column: Floor-wise Charts -->
+           <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+             <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Workstation Count by Floor</h2>
+             <div class="relative h-[300px]"><canvas id="floorChart"></canvas></div>
+           </div>
+           <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+             <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Occupancy Rate by Floor (%)</h2>
+             <div class="relative h-[300px]"><canvas id="floorPercentageChart"></canvas></div>
+           </div>
+           <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Common Areas & Support</h2>
+                <div class="space-y-4">
+                     <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                        <div class="flex items-center">
+                             <svg class="w-6 h-6 text-indigo-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.28-1.25-1.44-1.654M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.28-1.25 1.44-1.654M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 0c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"></path></svg>
+                             <span>Conference Rooms</span>
+                        </div>
+                        <span class="font-bold">11 <span class="font-medium text-slate-500">(166 Seats)</span></span>
+                     </div>
+                      <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                        <div class="flex items-center">
+                             <svg class="w-6 h-6 text-amber-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v2c0 1.105-.895 2-2 2H5c-1.105 0-2-.895-2-2V3m18 0H3m18 0h-2m-2 0h-2m-2 0h-2m-2 0h-2m-2 0H5m14 0v2c0 .552-.448 1-1 1h-1c-.552 0-1-.448-1-1V3m-4 0v2c0 .552-.448 1-1 1h-1c-.552 0-1-.448-1-1V3m-4 0v2c0 .552-.448 1-1 1H6c-.552 0-1-.448-1-1V3"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v12H6V9h12zM9 12h6m-6 3h6"></path></svg>
+                             <span>Pantries</span>
+                        </div>
+                        <span class="font-bold">7 <span class="font-medium text-slate-500">(97 Seats)</span></span>
+                     </div>
+                      <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-teal-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            <span>Training Rooms</span>
+                        </div>
+                        <span class="font-bold">2 <span class="font-medium text-slate-500">(86 Seats)</span></span>
+                     </div>
+                </div>
+           </div>
+        </section>
+
+        <!-- Full Data Table Section -->
+        <section class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">Full Occupancy Data</h2>
+            <div class="max-h-96 overflow-y-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="text-slate-700 uppercase bg-slate-200 sticky top-0">
+                        <tr>
+                            <th rowspan="2" class="p-3">Area</th>
+                            <th colspan="3" class="p-3 text-center border-l border-b">Workstation</th>
+                            <th colspan="3" class="p-3 text-center border-l border-b">Cabin</th>
+                            <th colspan="2" class="p-3 text-center border-l border-b">Conference Room</th>
+                            <th colspan="2" class="p-3 text-center border-l border-b">Pantry</th>
+                            <th colspan="2" class="p-3 text-center border-l border-b">Training Room</th>
+                        </tr>
+                        <tr>
+                            <th class="p-3 text-center bg-slate-200 border-l">Capacity</th>
+                            <th class="p-3 text-center bg-slate-200">Occupied</th>
+                            <th class="p-3 text-center bg-slate-200">Available</th>
+                            <th class="p-3 text-center bg-slate-200 border-l">Capacity</th>
+                            <th class="p-3 text-center bg-slate-200">Occupied</th>
+                            <th class="p-3 text-center bg-slate-200">Available</th>
+                            <th class="p-3 text-center bg-slate-200 border-l">Rooms</th>
+                            <th class="p-3 text-center bg-slate-200">Seats</th>
+                            <th class="p-3 text-center bg-slate-200 border-l">Rooms</th>
+                            <th class="p-3 text-center bg-slate-200">Seats</th>
+                            <th class="p-3 text-center bg-slate-200 border-l">Rooms</th>
+                            <th class="p-3 text-center bg-slate-200">Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody id="full-data-table" class="divide-y divide-slate-200">
+                        <!-- Data will be injected here by JS -->
+                    </tbody>
+                </table>
+            </div>
+             <div class="mt-6 bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg">
+                 <h3 class="text-xl font-bold text-slate-800">Strategic Opportunity</h3>
+                 <p class="text-slate-600 mt-2">With a significant overall workstation availability of 57%, there is a substantial opportunity to optimize our real estate footprint.
+                    We can consider consolidating teams to free up entire floors and reserve this space for projected future growth.
+                </p>
+            </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      Chart.register(ChartDataLabels);
+
+       const occupancyData = [
+          { area: 'Ground Floor', ws_cap: 6, ws_occ: 4, cab_cap: 6, cab_occ: 2, conf_cap: 0, conf_seats: 0, pantry_cap: 1, pantry_seats: 8, train_cap: 0, train_seats: 0 },
+          { area: 'First Floor', ws_cap: 84, ws_occ: 4, cab_cap: 7, cab_occ: 2, conf_cap: 1, conf_seats: 14, pantry_cap: 1, pantry_seats: 14, train_cap: 0, train_seats: 0 },
+          { area: 'Second Floor', ws_cap: 168, ws_occ: 106, cab_cap: 11, cab_occ: 5, conf_cap: 2, conf_seats: 30, pantry_cap: 1, pantry_seats: 19, train_cap: 0, train_seats: 0 },
+          { area: 'Third Floor', ws_cap: 160, ws_occ: 43, cab_cap: 12, cab_occ: 10, conf_cap: 2, conf_seats: 27, pantry_cap: 1, pantry_seats: 12, train_cap: 0, train_seats: 0 },
+          { area: 'Fourth Floor', ws_cap: 156, ws_occ: 59, cab_cap: 12, cab_occ: 8, conf_cap: 2, conf_seats: 29, pantry_cap: 1, pantry_seats: 12, train_cap: 0, train_seats: 0 },
+          { area: 'Fifth Floor', ws_cap: 120, ws_occ: 68, cab_cap: 10, cab_occ: 10, conf_cap: 1, conf_seats: 16, pantry_cap: 1, pantry_seats: 20, train_cap: 0, train_seats: 0 },
+          { area: 'Sixth Floor', ws_cap: 72, ws_occ: 44, cab_cap: 11, cab_occ: 7, conf_cap: 2, conf_seats: 28, pantry_cap: 1, pantry_seats: 12, train_cap: 0, train_seats: 0 },
+          { area: 'Seventh Floor', ws_cap: 32, ws_occ: 16, cab_cap: 5, cab_occ: 2, conf_cap: 1, conf_seats: 22, pantry_cap: 0, pantry_seats: 0, train_cap: 2, train_seats: 86 },
+          { area: 'TOTAL', ws_cap: 798, ws_occ: 344, cab_cap: 74, cab_occ: 46, conf_cap: 11, conf_seats: 166, pantry_cap: 7, pantry_seats: 97, train_cap: 2, train_seats: 86 },
+       ];
+
+      // --- Populate Full Data Table ---
+      const tableBody = document.getElementById('full-data-table');
+      occupancyData.forEach(d => {
+          const row = document.createElement('tr');
+          const isTotal = d.area === 'TOTAL';
+          row.className = isTotal ? 'bg-slate-200 font-bold' : 'hover:bg-slate-100';
+          row.innerHTML = `
+              <td class="p-3 font-medium text-slate-800">${d.area}</td>
+              <td class="p-3 text-center border-l">${d.ws_cap}</td>
+              <td class="p-3 text-center">${d.ws_occ}</td>
+              <td class="p-3 text-center">${d.ws_cap - d.ws_occ}</td>
+              <td class="p-3 text-center border-l">${d.cab_cap}</td>
+              <td class="p-3 text-center">${d.cab_occ}</td>
+              <td class="p-3 text-center">${d.cab_cap - d.cab_occ}</td>
+              <td class="p-3 text-center border-l">${d.conf_cap || '-'}</td>
+              <td class="p-3 text-center">${d.conf_seats || '-'}</td>
+              <td class="p-3 text-center border-l">${d.pantry_cap || '-'}</td>
+              <td class="p-3 text-center">${d.pantry_seats || '-'}</td>
+              <td class="p-3 text-center border-l">${d.train_cap || '-'}</td>
+              <td class="p-3 text-center">${d.train_seats || '-'}</td>
+          `;
+          tableBody.appendChild(row);
+      });
+
+      const doughnutOptions = {
+        responsive: true, maintainAspectRatio: false, cutout: "70%",
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => `${c.label}: ${c.raw} (${((c.raw / c.chart.getDatasetMeta(0).total) * 100).toFixed(0)}%)`
+            }
+          },
+          datalabels: {
+            formatter: (v, c) => `${((v / c.chart.getDatasetMeta(0).total) * 100).toFixed(0)}%`,
+            color: '#000', font: { weight: "bold" },
+          },
+        },
+      };
+
+      new Chart(document.getElementById("workstationChart").getContext("2d"), {
+        type: "doughnut", data: { labels: ["Occupied", "Available"], datasets: [{ data: [344, 454], backgroundColor: ["#4f46e5", "#e5e7eb"], borderWidth: 4 }] }, options: doughnutOptions
+      });
+      new Chart(document.getElementById("cabinChart").getContext("2d"), {
+        type: "doughnut", data: { labels: ["Occupied", "Available"], datasets: [{ data: [46, 28], backgroundColor: ["#10b981", "#e5e7eb"], borderWidth: 4 }] }, options: doughnutOptions
+      });
+
+      const floorChartData = occupancyData.filter(d => d.area !== 'TOTAL');
+      const floorLabels = floorChartData.map(d => d.area);
+      const occupiedData = floorChartData.map(d => d.ws_occ);
+      const availableData = floorChartData.map(d => d.ws_cap - d.ws_occ);
+
+      new Chart(document.getElementById("floorChart").getContext("2d"), {
+        type: "bar",
+        data: { labels: floorLabels, datasets: [{ label: "Occupied", data: occupiedData, backgroundColor: "#4f46e5" }, { label: "Available", data: availableData, backgroundColor: "#d1d5db" }] },
+        options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom" }, datalabels: { display: false } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { display: false } } } }
+      });
+
+      const occupancyPercentageData = floorChartData.map(d => d.ws_cap === 0 ? 0 : (d.ws_occ / d.ws_cap) * 100);
+      new Chart(document.getElementById("floorPercentageChart").getContext("2d"), {
+        type: "bar",
+        data: { labels: floorLabels, datasets: [{ label: "Occupancy %", data: occupancyPercentageData, backgroundColor: "#4f46e5" }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `Occupancy: ${c.parsed.y.toFixed(1)}%` } }, datalabels: { anchor: 'end', align: 'top', formatter: (v) => `${v.toFixed(0)}%`, color: '#374151' } }, scales: { y: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + "%" } }, x: { grid: { display: false } } } }
+      });
+    </script>
+  </body>
+</html>
