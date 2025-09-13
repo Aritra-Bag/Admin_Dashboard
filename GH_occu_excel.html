@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest House Occupancy Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Main Container -->
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-gradient-to-r from-teal-700 to-teal-800 text-white p-6">
+            <h1 class="text-3xl font-extrabold tracking-tight">Guest House Occupancy Dashboard</h1>
+            <p class="text-teal-200 text-lg mt-1">Status as of August 2025</p>
+        </header>
+
+        <main class="p-6 md:p-8">
+            <!-- KPIs Section -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Overall Occupancy</h3>
+                    <p class="text-teal-600 text-5xl font-bold mt-2">87%</p>
+                    <p class="text-slate-400">52 of 60 Flats Occupied</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Available Flats</h3>
+                    <p class="text-teal-600 text-5xl font-bold mt-2">8</p>
+                    <p class="text-slate-400">Primarily in D-Block</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Fully Occupied Blocks</h3>
+                    <p class="text-teal-600 text-5xl font-bold mt-2">3</p>
+                    <p class="text-slate-400">A-1, A-2, and B-Block</p>
+                </div>
+                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Highest Capacity</h3>
+                    <p class="text-teal-600 text-5xl font-bold mt-2">D-Block</p>
+                    <p class="text-slate-400">23 Total Flats</p>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Area -->
+            <section class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <!-- Left Column: Chart and Analysis -->
+                <div class="lg:col-span-3 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Current Occupancy by Block</h2>
+                    <div class="relative h-[400px]">
+                        <canvas id="occupancyChart"></canvas>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Key Observations</h3>
+                        <ul class="space-y-3 text-slate-600">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span><strong>High Utilization:</strong> The guest house is operating at a high 87% capacity, indicating strong and consistent demand for accommodation.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-yellow-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span><strong>Capacity Constraint:</strong> With Blocks A-1, A-2, and B completely full, there is zero availability in these sections, limiting options for new guests.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column: Data Table and Discussion -->
+                <div class="lg:col-span-2 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                     <h2 class="text-2xl font-bold text-slate-800 mb-4">Detailed Block-wise Data</h2>
+                     <div class="max-h-[400px] overflow-y-auto">
+                        <table class="w-full text-left text-slate-600">
+                            <thead class="text-sm text-slate-700 uppercase bg-slate-200 sticky top-0">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3">Block</th>
+                                    <th scope="col" class="px-4 py-3 text-center">Total Flats</th>
+                                    <th scope="col" class="px-4 py-3 text-center">Occupied</th>
+                                    <th scope="col" class="px-4 py-3 text-center">Vacant</th>
+                                    <th scope="col" class="px-4 py-3 text-center">Occupancy %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="full-data-table" class="divide-y divide-slate-200">
+                                <!-- Data injected by JS -->
+                            </tbody>
+                        </table>
+                     </div>
+                     <div class="mt-8 bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                        <h3 class="text-xl font-bold text-slate-800">Strategic Discussion</h3>
+                        <p class="text-slate-600 mt-2">With near-total capacity in A and B blocks, a review of the allocation policy and exploration of expansion possibilities are necessary to meet future demand, as D-Block’s remaining 8 flats serve as the only current buffer.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+      Chart.register(ChartDataLabels);
+
+      const occupancyData = [
+          { block: 'A-1 Block', total: 12, filled: 12 },
+          { block: 'A-2 Block', total: 13, filled: 13 },
+          { block: 'B-Block', total: 12, filled: 12 },
+          { block: 'D-Block', total: 23, filled: 15 }
+      ];
+
+      // --- Populate Full Data Table ---
+      const tableBody = document.getElementById('full-data-table');
+      let totalFlats = 0, totalFilled = 0;
+      occupancyData.forEach(d => {
+          totalFlats += d.total;
+          totalFilled += d.filled;
+          const vacant = d.total - d.filled;
+          const percentage = d.total === 0 ? 0 : (d.filled / d.total) * 100;
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-slate-100';
+          row.innerHTML = `
+              <td class="px-4 py-3 font-medium text-slate-800">${d.block}</td>
+              <td class="px-4 py-3 text-center">${d.total}</td>
+              <td class="px-4 py-3 text-center">${d.filled}</td>
+              <td class="px-4 py-3 text-center">${vacant}</td>
+              <td class="px-4 py-3 text-center font-semibold ${percentage === 100 ? 'text-red-500' : 'text-slate-700'}">${percentage.toFixed(0)}%</td>
+          `;
+          tableBody.appendChild(row);
+      });
+      // Add Total Row
+      const totalVacant = totalFlats - totalFilled;
+      const totalPercentage = totalFlats === 0 ? 0 : (totalFilled / totalFlats) * 100;
+      const totalRow = document.createElement('tr');
+      totalRow.className = 'bg-slate-200 font-bold';
+      totalRow.innerHTML = `
+          <td class="px-4 py-3 text-slate-800">TOTAL</td>
+          <td class="px-4 py-3 text-center">${totalFlats}</td>
+          <td class="px-4 py-3 text-center">${totalFilled}</td>
+          <td class="px-4 py-3 text-center">${totalVacant}</td>
+          <td class="px-4 py-3 text-center text-slate-800">${totalPercentage.toFixed(0)}%</td>
+      `;
+      tableBody.appendChild(totalRow);
+
+
+      // --- Occupancy Bar Chart ---
+      const occupancyCtx = document.getElementById('occupancyChart').getContext('2d');
+      new Chart(occupancyCtx, {
+          type: 'bar',
+          data: {
+              labels: occupancyData.map(d => d.block),
+              datasets: [
+                  { label: 'Occupied', data: occupancyData.map(d => d.filled), backgroundColor: '#14b8a6' }, // Teal-500
+                  { label: 'Vacant', data: occupancyData.map(d => d.total - d.filled), backgroundColor: '#e2e8f0' } // Slate-200
+              ]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { position: 'bottom' },
+                  datalabels: {
+                     display: (context) => context.dataset.data[context.dataIndex] > 0, // only show if value > 0
+                     color: '#334155', // slate-700
+                     font: { weight: 'bold' }
+                  }
+              },
+              scales: {
+                  x: { stacked: true, grid: { display: false } },
+                  y: { stacked: true, grid: { display: false }, ticks: { display: false } }
+              }
+          }
+      });
+    </script>
+</body>
+</html>
