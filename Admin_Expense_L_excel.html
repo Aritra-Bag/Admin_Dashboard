@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrative Expense Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Main Container -->
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6">
+            <h1 class="text-3xl font-extrabold tracking-tight">Administrative Expense Dashboard</h1>
+            <p class="text-slate-300 text-lg mt-1">Performance Analysis: June - August 2025</p>
+        </header>
+
+        <main class="p-6 md:p-8">
+            <!-- KPIs Section -->
+            <section id="kpis" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Total Expense (Aug)</h3>
+                    <p class="text-slate-800 text-5xl font-bold mt-2">₹2.30Cr</p>
+                    <p class="text-green-500 font-semibold flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                        Up 6.4% from July
+                    </p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Highest Expense (Aug)</h3>
+                    <p class="text-slate-800 text-4xl font-bold mt-2 truncate">REGO ETS</p>
+                    <p class="text-slate-400">₹55.03 Lakhs</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Top 2 Drivers</h3>
+                    <p class="text-slate-800 text-5xl font-bold mt-2">45%</p>
+                    <p class="text-slate-400">REGO ETS & Canteen</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Largest Increase</h3>
+                    <p class="text-slate-800 text-4xl font-bold mt-2 truncate">Hotel Charges</p>
+                    <p class="text-red-500 font-semibold flex items-center">
+                       <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                        Up 43.7% from July
+                    </p>
+                </div>
+            </section>
+
+            <!-- Chart & Key Insights -->
+            <section class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-8">
+                <div class="lg:col-span-3 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Top 5 Expense Comparison</h2>
+                    <div class="relative h-[400px]"><canvas id="expenseChart"></canvas></div>
+                </div>
+                <div class="lg:col-span-2 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Analysis & Recommendation</h2>
+                    <ul class="space-y-4 text-slate-600 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div><strong>Top Cost Drivers:</strong> 'REGO ETS' & 'Canteen' consistently dominate spending, accounting for nearly half of August's total admin costs.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <div><strong>Significant Spikes:</strong> 'Hotel Charges' saw a major 43.7% increase in August, indicating a potential surge in travel or events that needs further investigation.</div>
+                        </li>
+                    </ul>
+                    <div class="bg-slate-200 border-l-4 border-slate-500 p-4 rounded-r-lg">
+                        <h3 class="text-lg font-bold text-slate-800">Strategic Focus</h3>
+                        <p class="text-slate-700 mt-2">To achieve meaningful cost savings, a strategic review of the high-value contracts for 'REGO ETS' and 'Canteen' is imperative. Optimizing these two areas presents the most significant opportunity for budget reduction.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Full Data Table -->
+            <section class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Full Expense Breakdown</h2>
+                <div class="max-h-96 overflow-y-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-slate-700 uppercase bg-slate-200 sticky top-0">
+                            <tr>
+                                <th class="p-3">Service Type</th>
+                                <th class="p-3 text-right">June (₹)</th>
+                                <th class="p-3 text-right">July (₹)</th>
+                                <th class="p-3 text-right">August (₹)</th>
+                                <th class="p-3 text-center">Trend (Jul-Aug)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-data-table" class="divide-y divide-slate-200">
+                            <!-- Data injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const expenseData = [
+            { service: "AMBULANCE", jun: 128630, jul: 127376, aug: 132347 },
+            { service: "CANTEEN", jun: 5059579, jul: 4696014, aug: 5051287 },
+            { service: "COURIER SERVICES", jun: 175148, jul: 245841, aug: 147725 },
+            { service: "DATA STORAGE RENTAL CHARGES HO", jun: 20334, jul: 20334, aug: 20334 },
+            { service: "Domestic Electrical Meter Installation", jun: 0, jul: 0, aug: 236791 },
+            { service: "DRINKING WATER SERVICE HO", jun: 13050, jul: 15420, aug: 14025 },
+            { service: "FACILITY MANAGEMENT SERVICE", jun: 2185919, jul: 2225153, aug: 2315649 },
+            { service: "HEAVY VEHICLE", jun: 1621355, jul: 1552134, aug: 1416225 },
+            { service: "HIRE CHARGES (Swift Dizre 12 Hrs)", jun: 64355, jul: 20328, aug: 0 },
+            { service: "HOTEL AND RESTAURANT", jun: 778032, jul: 765476, aug: 1100079 },
+            { service: "HOUSEKEEPING BIOMASS", jun: 0, jul: 112099, aug: 123900 },
+            { service: "LETTER HEAD,VISITING CARD & ID Card", jun: 33960, jul: 62114, aug: 35120 },
+            { service: "Mobile Connections", jun: 39558, jul: 39558, aug: 40000 },
+            { service: "PANTRY EXPENSES HO", jun: 19237, jul: 23999, aug: 18916 },
+            { service: "PEST CONTROL", jun: 178475, jul: 227150, aug: 185850 },
+            { service: "REGO ETS SERVICES", jun: 5491920, jul: 5281871, aug: 5295910 },
+            { service: "RENTED GUEST HOUSES", jun: 936209, jul: 947211, aug: 952711 },
+            { service: "REPAIR & MAINTENANCE", jun: 429464, jul: 308130, aug: 697740 },
+            { service: "SECURITY SERVICE CHARGES HO", jun: 124404, jul: 124404, aug: 124404 },
+            { service: "SECURITY SERVICE CHARGES", jun: 2558371, jul: 2232934, aug: 2293614 },
+            { service: "STATIONERY & HOUSEKEEPING MATERIAL H.O", jun: 14472, jul: 19561, aug: 18431 },
+            { service: "ROAD SWEEPER MACHINE", jun: 2642152, jul: 1981050, aug: 2333568 },
+            { service: "Tree Plant Expenses H.O", jun: 27217, jul: 27217, aug: 27217 },
+            { service: "WATER COOLER & INDUSTRIAL UV PURIFIERS", jun: 365564, jul: 392468, aug: 399395 },
+            { service: "WATER TANKER HIRE CHARGES 20 KL", jun: 141600, jul: 141600, aug: 0 }
+        ];
+
+        // --- Populate Full Data Table ---
+        const tableBody = document.getElementById('full-data-table');
+        let totalJun = 0, totalJul = 0, totalAug = 0;
+        expenseData.forEach(d => {
+            totalJun += d.jun; totalJul += d.jul; totalAug += d.aug;
+            const trend = d.aug > d.jul ? '<span class="text-green-500">▲</span>' : d.aug < d.jul ? '<span class="text-red-500">▼</span>' : '<span class="text-slate-400">-</span>';
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-slate-100';
+            row.innerHTML = `
+                <td class="p-3 font-medium text-slate-800">${d.service}</td>
+                <td class="p-3 text-right">${d.jun > 0 ? `₹${d.jun.toLocaleString('en-IN')}` : '-'}</td>
+                <td class="p-3 text-right">${d.jul > 0 ? `₹${d.jul.toLocaleString('en-IN')}` : '-'}</td>
+                <td class="p-3 text-right">${d.aug > 0 ? `₹${d.aug.toLocaleString('en-IN')}` : '-'}</td>
+                <td class="p-3 text-center">${trend}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'bg-slate-200 font-bold';
+        totalRow.innerHTML = `
+             <td class="p-3 text-slate-800">TOTAL</td>
+             <td class="p-3 text-right">₹${totalJun.toLocaleString('en-IN')}</td>
+             <td class="p-3 text-right">₹${totalJul.toLocaleString('en-IN')}</td>
+             <td class="p-3 text-right">₹${totalAug.toLocaleString('en-IN')}</td>
+             <td class="p-3 text-center">${totalAug > totalJul ? '<span class="text-green-500">▲</span>' : '<span class="text-red-500">▼</span>'}</td>
+        `;
+        tableBody.appendChild(totalRow);
+        
+        // --- Top 5 Expense Chart ---
+        const sortedByAug = [...expenseData].sort((a, b) => b.aug - a.aug);
+        const top5Data = sortedByAug.slice(0, 5);
+
+        new Chart(document.getElementById('expenseChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: top5Data.map(d => d.service),
+                datasets: [
+                    { label: 'Jun-25', data: top5Data.map(d => d.jun), backgroundColor: 'rgba(100, 116, 139, 0.6)' },
+                    { label: 'Jul-25', data: top5Data.map(d => d.jul), backgroundColor: 'rgba(59, 130, 246, 0.6)' },
+                    { label: 'Aug-25', data: top5Data.map(d => d.aug), backgroundColor: 'rgba(29, 78, 216, 0.8)' },
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ₹${c.parsed.y.toLocaleString('en-IN')}` } },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: (v) => v >= 100000 ? `₹${(v / 100000).toFixed(0)}L` : `₹${v / 1000}K` }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
