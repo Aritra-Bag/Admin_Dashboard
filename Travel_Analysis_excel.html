@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Expenses & Cost Control Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Slide Container -->
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-cyan-800 text-white p-6">
+            <h1 class="text-3xl font-bold">Travel Expenses & Cost Control Analysis</h1>
+            <p class="text-cyan-200 text-lg">February - August 2025 Report & Implemented Initiatives</p>
+        </header>
+
+        <main class="p-6 md:p-8">
+            <!-- NEW: KPIs Section -->
+            <section id="kpis" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Total Spend (YTD)</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">₹4.50Cr</p>
+                    <p class="text-slate-400">Across all travel categories</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Peak Spending Month</h3>
+                    <p class="text-cyan-600 text-4xl font-bold mt-2 truncate">April</p>
+                    <p class="text-slate-400">₹93.4 Lakhs</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Top Expense Driver</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">Flights</p>
+                    <p class="text-slate-400">67% of Total Spend</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h3 class="text-slate-500 font-semibold text-lg">Avg. Monthly Spend</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">₹64L</p>
+                    <p class="text-slate-400">Calculated over 7 months</p>
+                </div>
+            </section>
+
+            <!-- Section 1: Travel Expenses Analysis (Original) -->
+            <div>
+                <h2 class="text-2xl font-semibold text-slate-800 mb-6 border-b pb-3"> Monthly Expense Breakdown</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <!-- Key Insights Section (Updated with new data) -->
+                    <div class="lg:col-span-2 bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4">Key Insights</h3>
+                        <ul class="space-y-4 text-slate-600">
+                             <li class="flex items-start">
+                                <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                <div>
+                                    <strong>April Expense Spike:</strong> Total travel spend peaked sharply in April at ₹93.4 Lakhs, driven by a surge in flight costs to over ₹70 Lakhs.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
+                                <div>
+                                    <strong>Flight Dominance:</strong> Air travel is the largest expense category, accounting for 67% of the total spend across the seven months.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
+                                <div>
+                                    <strong>Lowest Spend in March:</strong> March saw the lowest expenditure at ₹49.9 Lakhs, a significant dip before the April peak.
+                                </div>
+                            </li>
+                             <li class="flex items-start">
+                                <svg class="w-6 h-6 text-yellow-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01"></path></svg>
+                                <div>
+                                    <strong>Hotel Cost Variability:</strong> Hotel expenses show high variability, ranging from ₹6.5 Lakhs in May to over ₹17.5 Lakhs in April.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Chart Section (Original) -->
+                    <div class="lg:col-span-3 bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Monthly Travel Expenses (₹)</h3>
+                        <div class="relative h-[400px]">
+                            <canvas id="travelChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider (Original) -->
+            <hr class="my-8 border-t-2 border-slate-200">
+
+            <!-- Section 2: Cost Control Initiatives (Original) -->
+            <div>
+                <h2 class="text-2xl font-semibold text-slate-800 mb-6 border-b pb-3"> Cost Control & Optimization Initiatives</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4 flex items-center">
+                            <svg class="w-7 h-7 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                            Travel Cost Control
+                        </h3>
+                        <ul class="space-y-4 text-slate-600 mt-4">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <div><strong class="text-slate-700">Standardized Booking Process:</strong> A mandatory travel form has been introduced to streamline and control all travel bookings.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <div><strong class="text-slate-700">Strategic Hotel Onboarding:</strong> Partnered with three hotels (two near HO @ ₹2,200/night, one near Airport @ ₹3,000/night) on a BTC basis for cost-effective stays.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <div><strong class="text-slate-700">Optimized Visa Processing:</strong> Migrated to the Atlys portal, securing some visas for as low as ₹1 during flash sales.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-4 flex items-center">
+                           <svg class="w-7 h-7 mr-3 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l2-2h8a1 1 0 001-1z"></path></svg>
+                            Transportation Utilization
+                        </h3>
+                        <div class="space-y-4 text-slate-600 mt-4">
+                            <div><strong class="text-slate-700">Route-Based Bus Allocation:</strong><p class="ml-6 mt-1">Shifted from department-wise to route-wise bus allocation, significantly reducing kilometers traveled.</p></div>
+                            <div><strong class="text-slate-700">Optimized Vehicle Parking:</strong><p class="ml-6 mt-1">Relocated bus and Bolero parking to minimize unnecessary travel and improve turnaround times.</p></div>
+                            <div><strong class="text-slate-700">Future Plans & Challenges:</strong>
+                                <ul class="list-disc list-inside ml-6 mt-1 space-y-2">
+                                    <li>Negotiating with new vendors for employee transportation.</li>
+                                    <li>Extending route-wise deployment to 24-hour shifts.</li>
+                                    <li>Implementing a 15-day review cycle to shuffle buses.</li>
+                                    <li class="text-red-600"><strong>Challenge:</strong> Employee numbers in 24-hour shifts exceed current bus capacity.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- NEW: Full Data Table Section -->
+            <section class="mt-8 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <h2 class="text-2xl font-semibold text-slate-800 mb-4">Full Expense Data</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-slate-700 uppercase bg-slate-200">
+                            <tr>
+                                <th class="p-3">Month</th>
+                                <th class="p-3 text-right">Flight (₹)</th>
+                                <th class="p-3 text-right">Hotel (₹)</th>
+                                <th class="p-3 text-right">Car Rental (₹)</th>
+                                <th class="p-3 text-right">Train (₹)</th>
+                                <th class="p-3 text-right">VISA (₹)</th>
+                                <th class="p-3 text-right font-bold border-l-2 border-slate-300">Total (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-data-table" class="divide-y divide-slate-200">
+                            <!-- Data injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const travelRawData = [
+            { month: 'Feb', flight: 5068684, hotel: 992280, car: 970055, train: 58585, visa: 0 },
+            { month: 'Mar', flight: 2922416, hotel: 763468, car: 781570, train: 118202, visa: 408855 },
+            { month: 'Apr', flight: 7002167, hotel: 1750193, car: 389012, train: 80000, visa: 122158 },
+            { month: 'May', flight: 3555555, hotel: 649295, car: 775971, train: 168894, visa: 174551 },
+            { month: 'Jun', flight: 3420547, hotel: 747435, car: 829023, train: 226103, visa: 57654 },
+            { month: 'Jul', flight: 3486813, hotel: 1208331, car: 758832, train: 257598, visa: 279585 },
+            { month: 'Aug', flight: 4456074, hotel: 1354286, car: 710589, train: 191518, visa: 246978 }
+        ];
+
+        // --- Populate Full Data Table ---
+        const tableBody = document.getElementById('full-data-table');
+        let totalFlight = 0, totalHotel = 0, totalCar = 0, totalTrain = 0, totalVisa = 0, grandTotal = 0;
+        travelRawData.forEach(d => {
+            const total = d.flight + d.hotel + d.car + d.train + d.visa;
+            totalFlight += d.flight; totalHotel += d.hotel; totalCar += d.car; totalTrain += d.train; totalVisa += d.visa; grandTotal += total;
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-slate-100';
+            row.innerHTML = `
+                <td class="p-3 font-medium text-slate-800">${d.month}</td>
+                <td class="p-3 text-right">${d.flight.toLocaleString('en-IN')}</td>
+                <td class="p-3 text-right">${d.hotel.toLocaleString('en-IN')}</td>
+                <td class="p-3 text-right">${d.car.toLocaleString('en-IN')}</td>
+                <td class="p-3 text-right">${d.train.toLocaleString('en-IN')}</td>
+                <td class="p-3 text-right">${d.visa > 0 ? d.visa.toLocaleString('en-IN') : '-'}</td>
+                <td class="p-3 text-right font-bold border-l-2 border-slate-300">${total.toLocaleString('en-IN')}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'bg-slate-200 font-bold';
+        totalRow.innerHTML = `
+            <td class="p-3 text-slate-800">TOTAL</td>
+            <td class="p-3 text-right">₹${totalFlight.toLocaleString('en-IN')}</td>
+            <td class="p-3 text-right">₹${totalHotel.toLocaleString('en-IN')}</td>
+            <td class="p-3 text-right">₹${totalCar.toLocaleString('en-IN')}</td>
+            <td class="p-3 text-right">₹${totalTrain.toLocaleString('en-IN')}</td>
+            <td class="p-3 text-right">₹${totalVisa.toLocaleString('en-IN')}</td>
+            <td class="p-3 text-right border-l-2 border-slate-300">₹${grandTotal.toLocaleString('en-IN')}</td>
+        `;
+        tableBody.appendChild(totalRow);
+        
+        // --- Travel Expense Chart (Original Config) ---
+        new Chart(document.getElementById('travelChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: travelRawData.map(d => d.month),
+                datasets: [
+                    { label: 'Flight', data: travelRawData.map(d => d.flight), backgroundColor: 'rgba(54, 162, 235, 0.8)' },
+                    { label: 'Hotel', data: travelRawData.map(d => d.hotel), backgroundColor: 'rgba(75, 192, 192, 0.8)' },
+                    { label: 'Car Rental', data: travelRawData.map(d => d.car), backgroundColor: 'rgba(255, 206, 86, 0.8)' },
+                    { label: 'Train', data: travelRawData.map(d => d.train), backgroundColor: 'rgba(255, 159, 64, 0.8)' },
+                    { label: 'VISA', data: travelRawData.map(d => d.visa), backgroundColor: 'rgba(153, 102, 255, 0.8)' },
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ₹${c.parsed.y.toLocaleString('en-IN')}` } }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: {
+                        stacked: true, beginAtZero: true,
+                        ticks: {
+                            callback: (value) => {
+                                if (value >= 1000000) return `₹${(value / 1000000).toFixed(1)}M`;
+                                if (value >= 1000) return `₹${(value / 1000)}K`;
+                                return `₹${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
