@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Utilization Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+    <!-- Main Container -->
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-gradient-to-r from-cyan-800 to-cyan-900 text-white p-6">
+            <h1 class="text-3xl font-extrabold tracking-tight">Housing Utilization Dashboard</h1>
+            <p class="text-cyan-200 text-lg mt-1">A Combined Analysis of Room & Headcount Occupancy</p>
+        </header>
+
+        <main class="p-6 md:p-8">
+            <!-- KPIs Section -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Overall Room Occupancy</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">87%</p>
+                    <p class="text-slate-400">576 of 666 Rooms</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Overall Headcount Fill</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">67%</p>
+                    <p class="text-slate-400">5,150 of 7,709 Capacity</p>
+                </div>
+                <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Total Available Rooms</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">90</p>
+                    <p class="text-slate-400">67% are in Housing-1</p>
+                </div>
+                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                    <h3 class="text-slate-500 font-semibold text-lg">Available Headcount</h3>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">2,559</p>
+                    <p class="text-slate-400">Space for Future Growth</p>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Room Occupancy by Location</h2>
+                    <div class="relative h-[350px]"><canvas id="roomChart"></canvas></div>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Headcount by Location</h2>
+                    <div class="relative h-[350px]"><canvas id="headcountChart"></canvas></div>
+                </div>
+            </section>
+
+             <!-- Full Data Table & Insights -->
+            <section class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                 <h2 class="text-2xl font-bold text-slate-800 mb-4">Full Occupancy Data (As per Excel)</h2>
+                 <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-slate-700 uppercase bg-slate-200">
+                            <tr>
+                                <th rowspan="2" class="p-3">Location</th>
+                                <th colspan="3" class="p-3 text-center border-l border-b">Room Data</th>
+                                <th colspan="3" class="p-3 text-center border-l border-b">Headcount Data</th>
+                            </tr>
+                            <tr>
+                                <th class="p-3 text-center bg-slate-200 border-l">Capacity</th>
+                                <th class="p-3 text-center bg-slate-200">Occupied</th>
+                                <th class="p-3 text-center bg-slate-200">Available</th>
+                                <th class="p-3 text-center bg-slate-200 border-l">Capacity</th>
+                                <th class="p-3 text-center bg-slate-200">Occupied</th>
+                                <th class="p-3 text-center bg-slate-200">Available</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-data-table" class="divide-y divide-slate-200">
+                            <!-- Data injected by JS -->
+                        </tbody>
+                    </table>
+                 </div>
+                 <div class="mt-6 bg-cyan-50 border-l-4 border-cyan-500 p-6 rounded-r-lg">
+                    <h3 class="text-xl font-bold text-slate-800">Strategic Recommendation</h3>
+                    <p class="text-slate-600 mt-2">While room occupancy is high at 87%, headcount capacity is only at 67%. This suggests our current facilities are physically constrained but can support over 2,500 more personnel. The immediate priority is to leverage the 60 available rooms in 'Housing-1' to alleviate the critical space shortage in 'Gate-2 Hutment' and the 'Oxygen Plant'.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+      Chart.register(ChartDataLabels);
+
+      const housingData = [
+          { location: 'HOUSING-1', room_cap: 182, room_occ: 122, head_cap: 2184, head_occ: 1028 },
+          { location: 'HOUSING-2', room_cap: 141, room_occ: 114, head_cap: 1410, head_occ: 1048 },
+          { location: 'GATE-2 HUTMENT', room_cap: 266, room_occ: 265, head_cap: 3191, head_occ: 2533 },
+          { location: 'OXYGEN PLANT', room_cap: 77, room_occ: 75, head_cap: 924, head_occ: 541 },
+      ];
+
+      // --- Populate Full Data Table ---
+      const tableBody = document.getElementById('full-data-table');
+      let totalRoomCap = 0, totalRoomOcc = 0, totalHeadCap = 0, totalHeadOcc = 0;
+      housingData.forEach(d => {
+          totalRoomCap += d.room_cap;
+          totalRoomOcc += d.room_occ;
+          totalHeadCap += d.head_cap;
+          totalHeadOcc += d.head_occ;
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-slate-100';
+          row.innerHTML = `
+              <td class="p-3 font-medium text-slate-800">${d.location}</td>
+              <td class="p-3 text-center border-l">${d.room_cap}</td>
+              <td class="p-3 text-center">${d.room_occ}</td>
+              <td class="p-3 text-center">${d.room_cap - d.room_occ}</td>
+              <td class="p-3 text-center border-l">${d.head_cap.toLocaleString('en-IN')}</td>
+              <td class="p-3 text-center">${d.head_occ.toLocaleString('en-IN')}</td>
+              <td class="p-3 text-center">${(d.head_cap - d.head_occ).toLocaleString('en-IN')}</td>
+          `;
+          tableBody.appendChild(row);
+      });
+      // Add Total Row
+      const totalRow = document.createElement('tr');
+      totalRow.className = 'bg-slate-200 font-bold';
+      totalRow.innerHTML = `
+          <td class="p-3 text-slate-800">TOTAL</td>
+          <td class="p-3 text-center border-l">${totalRoomCap}</td>
+          <td class="p-3 text-center">${totalRoomOcc}</td>
+          <td class="p-3 text-center">${totalRoomCap - totalRoomOcc}</td>
+          <td class="p-3 text-center border-l">${totalHeadCap.toLocaleString('en-IN')}</td>
+          <td class="p-3 text-center">${totalHeadOcc.toLocaleString('en-IN')}</td>
+          <td class="p-3 text-center">${(totalHeadCap - totalHeadOcc).toLocaleString('en-IN')}</td>
+      `;
+      tableBody.appendChild(totalRow);
+      
+      const chartOptions = {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { 
+              legend: { position: 'bottom' },
+              datalabels: { 
+                  display: (c) => c.dataset.data[c.dataIndex] > 0, 
+                  color: (c) => c.dataset.label === 'Occupied' ? '#fff' : '#334155',
+                  font: { weight: 'bold' } 
+              }
+          },
+          scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#e2e8f0' } } }
+      };
+
+      // --- Room Chart ---
+      new Chart(document.getElementById('roomChart').getContext('2d'), {
+          type: 'bar',
+          data: {
+              labels: housingData.map(d => d.location),
+              datasets: [
+                  { label: 'Occupied', data: housingData.map(d => d.room_occ), backgroundColor: '#06b6d4' },
+                  { label: 'Available', data: housingData.map(d => d.room_cap - d.room_occ), backgroundColor: '#cbd5e1' }
+              ]
+          },
+          options: chartOptions
+      });
+
+      // --- Headcount Chart ---
+      new Chart(document.getElementById('headcountChart').getContext('2d'), {
+          type: 'bar',
+          data: {
+              labels: housingData.map(d => d.location),
+              datasets: [
+                  { label: 'Occupied', data: housingData.map(d => d.head_occ), backgroundColor: '#0891b2' },
+                  { label: 'Available', data: housingData.map(d => d.head_cap - d.head_occ), backgroundColor: '#cbd5e1' }
+              ]
+          },
+          options: chartOptions
+      });
+    </script>
+</body>
+</html>
