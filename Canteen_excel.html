@@ -30,7 +30,7 @@
     <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
         <header class="bg-gradient-to-r from-teal-700 to-teal-900 text-white p-6">
             <h1 class="text-3xl font-extrabold tracking-tight">Canteen Recovery Dashboard</h1>
-            <p class="text-teal-200 text-lg mt-1">Performance Analysis: May - August 2025</p>
+            <p class="text-teal-200 text-lg mt-1">Performance Analysis: April - August 2025</p>
         </header>
 
         <main class="p-6 md:p-8">
@@ -38,13 +38,13 @@
             <section id="kpis" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
                     <h3 class="text-slate-500 font-semibold text-lg">Total Recovery</h3>
-                    <p class="text-teal-600 text-4xl font-bold mt-2">₹1.04Cr</p>
-                    <p class="text-slate-400">Across all canteens (May-Aug)</p>
+                    <p class="text-teal-600 text-4xl font-bold mt-2">₹1.25Cr</p>
+                    <p class="text-slate-400">Across all canteens (Apr-Aug)</p>
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
                     <h3 class="text-slate-500 font-semibold text-lg">Top Performing Canteen</h3>
                     <p class="text-teal-600 text-4xl font-bold mt-2">Seamless</p>
-                    <p class="text-slate-400">₹46.1L total contribution</p>
+                    <p class="text-slate-400">₹57.4L total contribution</p>
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200">
                     <h3 class="text-slate-500 font-semibold text-lg">Peak Recovery Month</h3>
@@ -79,6 +79,7 @@
                             <thead class="text-sm text-slate-700 uppercase bg-slate-200 sticky top-0">
                                 <tr>
                                     <th scope="col" class="px-4 py-3">Canteen</th>
+                                    <th scope="col" class="px-4 py-3 text-right">April</th>
                                     <th scope="col" class="px-4 py-3 text-right">May</th>
                                     <th scope="col" class="px-4 py-3 text-right">June</th>
                                     <th scope="col" class="px-4 py-3 text-right">July</th>
@@ -88,6 +89,7 @@
                             <tbody class="divide-y divide-slate-200">
                                 <tr class="hover:bg-slate-100">
                                     <td class="px-4 py-3 font-medium">FITTINGS</td>
+                                    <td class="px-4 py-3 text-right">500,445</td>
                                     <td class="px-4 py-3 text-right">382,031</td>
                                     <td class="px-4 py-3 text-right">358,521</td>
                                     <td class="px-4 py-3 text-right">367,560</td>
@@ -95,6 +97,7 @@
                                 </tr>
                                 <tr class="hover:bg-slate-100">
                                     <td class="px-4 py-3 font-medium">LABOUR HOUSING2</td>
+                                    <td class="px-4 py-3 text-right">27,736</td>
                                     <td class="px-4 py-3 text-right">387,132</td>
                                     <td class="px-4 py-3 text-right">542,286</td>
                                     <td class="px-4 py-3 text-right">592,367</td>
@@ -102,6 +105,7 @@
                                 </tr>
                                 <tr class="hover:bg-slate-100">
                                     <td class="px-4 py-3 font-medium">RML1 DIP</td>
+                                    <td class="px-4 py-3 text-right">480,586</td>
                                     <td class="px-4 py-3 text-right">586,309</td>
                                     <td class="px-4 py-3 text-right">474,220</td>
                                     <td class="px-4 py-3 text-right">368,495</td>
@@ -109,6 +113,7 @@
                                 </tr>
                                 <tr class="hover:bg-slate-100">
                                     <td class="px-4 py-3 font-medium">SEAMLESS</td>
+                                    <td class="px-4 py-3 text-right">1,127,678</td>
                                     <td class="px-4 py-3 text-right">1,022,125</td>
                                     <td class="px-4 py-3 text-right">1,257,483</td>
                                     <td class="px-4 py-3 text-right">1,160,703</td>
@@ -116,6 +121,7 @@
                                 </tr>
                                  <tr class="hover:bg-slate-100">
                                     <td class="px-4 py-3 font-medium">RML3 GUEST HOUSE</td>
+                                    <td class="px-4 py-3 text-right">19,044</td>
                                     <td class="px-4 py-3 text-right">19,926</td>
                                     <td class="px-4 py-3 text-right">19,463</td>
                                     <td class="px-4 py-3 text-right">14,991</td>
@@ -123,6 +129,7 @@
                                 </tr>
                                 <tr class="bg-slate-200 font-bold text-slate-800">
                                     <td class="px-4 py-3">TOTAL</td>
+                                    <td class="px-4 py-3 text-right">2,155,489</td>
                                     <td class="px-4 py-3 text-right">2,397,523</td>
                                     <td class="px-4 py-3 text-right">2,651,973</td>
                                     <td class="px-4 py-3 text-right">2,504,116</td>
@@ -142,13 +149,13 @@
 
     <script>
         const recoveryData = {
-            labels: ['May-25', 'Jun-25', 'Jul-25', 'Aug-25'],
+            labels: ['Apr-25', 'May-25', 'Jun-25', 'Jul-25', 'Aug-25'],
             datasets: [
-                { label: 'FITTINGS CANTEEN', data: [382031, 358521, 367560, 310415], backgroundColor: '#38bdf8' }, // sky-400
-                { label: 'LABOUR HOUSING2 RML6', data: [387132, 542286, 592367, 731610], backgroundColor: '#34d399' }, // emerald-400
-                { label: 'RML1 DIP CANTEEN', data: [586309, 474220, 368495, 593581], backgroundColor: '#f87171' }, // red-400
-                { label: 'SEAMLESS CANTEEN', data: [1022125, 1257483, 1160703, 1167572], backgroundColor: '#fbbf24' }, // amber-400
-                { label: 'RML3 GUEST HOUSE', data: [19926, 19463, 14991, 10542], backgroundColor: '#a78bfa' } // violet-400
+                { label: 'FITTINGS CANTEEN', data: [500445, 382031, 358521, 367560, 310415], backgroundColor: '#38bdf8' }, // sky-400
+                { label: 'LABOUR HOUSING2 RML6', data: [27736, 387132, 542286, 592367, 731610], backgroundColor: '#34d399' }, // emerald-400
+                { label: 'RML1 DIP CANTEEN', data: [480586, 586309, 474220, 368495, 593581], backgroundColor: '#f87171' }, // red-400
+                { label: 'SEAMLESS CANTEEN', data: [1127678, 1022125, 1257483, 1160703, 1167572], backgroundColor: '#fbbf24' }, // amber-400
+                { label: 'RML3 GUEST HOUSE', data: [19044, 19926, 19463, 14991, 10542], backgroundColor: '#a78bfa' } // violet-400
             ]
         };
 
@@ -194,4 +201,3 @@
     </script>
 </body>
 </html>
-
