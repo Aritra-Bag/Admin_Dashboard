@@ -26,7 +26,7 @@
     <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
         <header class="bg-gradient-to-r from-purple-800 to-purple-900 text-white p-6">
             <h1 class="text-3xl font-extrabold tracking-tight">Guest House Performance Dashboard</h1>
-            <p class="text-purple-200 text-lg mt-1">Recovery & Guest Satisfaction Analysis (Jan - Aug 2025)</p>
+            <p class="text-purple-200 text-lg mt-1">Recovery & Guest Satisfaction Analysis (Jan - Sep 2025)</p>
         </header>
 
         <main class="p-6 md:p-8">
@@ -34,7 +34,7 @@
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Total Recovery (YTD)</h3>
-                    <p class="text-purple-600 text-5xl font-bold mt-2">₹7.26L</p>
+                    <p class="text-purple-600 text-5xl font-bold mt-2">₹7.86L</p>
                     <p class="text-slate-400">From Guest Deductions</p>
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
@@ -50,7 +50,7 @@
                  <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Negative Feedback</h3>
                     <p class="text-red-500 text-5xl font-bold mt-2">1%</p>
-                    <p class="text-slate-400">Due to AC Issue in Aug</p>
+                    <p class="text-slate-400">Due to AC Issue in Sep</p>
                 </div>
             </section>
 
@@ -98,7 +98,7 @@
                             </li>
                              <li class="flex items-start">
                                  <svg class="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                 <span><strong>Action Item:</strong> The single negative feedback point (AC failure) highlights an infrastructure risk. Proactively servicing or upgrading all AC units will protect our 99% satisfaction rate.</span>
+                                 <span><strong>Action Item:</strong> The single negative feedback point is due to AC failure. Proactively servicing or upgrading all AC units will protect our 99% satisfaction rate.</span>
                              </li>
                         </ul>
                      </div>
@@ -119,6 +119,7 @@
           { month: 'Jun', recovery: 120000, feedback: 98 },
           { month: 'Jul', recovery: 97000, feedback: 99 },
           { month: 'Aug', recovery: 73000, feedback: 99 },
+          { month: 'Sep', recovery: 60000, feedback: 99 }
       ];
 
       const labels = performanceData.map(d => d.month);
@@ -173,3 +174,4 @@
     </script>
 </body>
 </html>
+
