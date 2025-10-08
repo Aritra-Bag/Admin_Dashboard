@@ -34,22 +34,22 @@
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Overall Room Occupancy</h3>
-                    <p class="text-cyan-600 text-5xl font-bold mt-2">87%</p>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">77%</p>
                     <p class="text-slate-400">576 of 666 Rooms</p>
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Overall Headcount Fill</h3>
-                    <p class="text-cyan-600 text-5xl font-bold mt-2">67%</p>
-                    <p class="text-slate-400">5,150 of 7,709 Capacity</p>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">38%</p>
+                    <p class="text-slate-400">2,941 of 7,709 Capacity</p>
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Total Available Rooms</h3>
-                    <p class="text-cyan-600 text-5xl font-bold mt-2">90</p>
-                    <p class="text-slate-400">67% are in Housing-1</p>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">160</p>
+                    <p class="text-slate-400">81% are in Housing-1</p>
                 </div>
                  <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Available Headcount</h3>
-                    <p class="text-cyan-600 text-5xl font-bold mt-2">2,559</p>
+                    <p class="text-cyan-600 text-5xl font-bold mt-2">4,768</p>
                     <p class="text-slate-400">Space for Future Growth</p>
                 </div>
             </section>
@@ -68,7 +68,7 @@
 
              <!-- Full Data Table & Insights -->
             <section class="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                 <h2 class="text-2xl font-bold text-slate-800 mb-4">Full Occupancy Data (As per Excel)</h2>
+                 <h2 class="text-2xl font-bold text-slate-800 mb-4">Full Occupancy Data</h2>
                  <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead class="text-slate-700 uppercase bg-slate-200">
@@ -93,7 +93,8 @@
                  </div>
                  <div class="mt-6 bg-cyan-50 border-l-4 border-cyan-500 p-6 rounded-r-lg">
                     <h3 class="text-xl font-bold text-slate-800">Strategic Recommendation</h3>
-                    <p class="text-slate-600 mt-2">While room occupancy is high at 87%, headcount capacity is only at 67%. This suggests our current facilities are physically constrained but can support over 2,500 more personnel. The immediate priority is to leverage the 60 available rooms in 'Housing-1' to alleviate the critical space shortage in 'Gate-2 Hutment' and the 'Oxygen Plant'.</p>
+                    <p class="text-slate-600 mt-2">While room occupancy is high at 76%, headcount capacity is only at 38%. This suggests our current facilities are physically constrained but can support over 4,700 more personnel. </p>
+                    <!-- While room occupancy is high at 76%, headcount capacity is only at 38%. This suggests our current facilities are physically constrained but can support over 4,700 more personnel. The immediate priority is to leverage the 60 available rooms in 'Housing-1' to alleviate the critical space shortage in 'Gate-2 Hutment' and the 'Oxygen Plant' -->
                 </div>
             </section>
         </main>
@@ -103,9 +104,9 @@
       Chart.register(ChartDataLabels);
 
       const housingData = [
-          { location: 'HOUSING-1', room_cap: 182, room_occ: 122, head_cap: 2184, head_occ: 1028 },
-          { location: 'HOUSING-2', room_cap: 141, room_occ: 114, head_cap: 1410, head_occ: 1048 },
-          { location: 'GATE-2 HUTMENT', room_cap: 266, room_occ: 265, head_cap: 3191, head_occ: 2533 },
+          { location: 'HOUSING-1', room_cap: 182, room_occ: 52, head_cap: 2184, head_occ: 346 },
+          { location: 'HOUSING-2', room_cap: 141, room_occ: 114, head_cap: 1410, head_occ: 178 },
+          { location: 'GATE-2 HUTMENT', room_cap: 266, room_occ: 265, head_cap: 3191, head_occ: 1876 },
           { location: 'OXYGEN PLANT', room_cap: 77, room_occ: 75, head_cap: 924, head_occ: 541 },
       ];
 
