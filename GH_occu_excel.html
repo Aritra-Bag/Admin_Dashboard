@@ -55,9 +55,9 @@
             </section>
 
             <!-- Main Dashboard Area -->
-            <section class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Left Column: Chart and Analysis -->
-                <div class="lg:col-span-3 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <div class="lg:col-span-1 bg-slate-50 p-6 rounded-xl border border-slate-200">
                     <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Current Occupancy by Block</h2>
                     <div class="relative h-[400px]">
                         <canvas id="occupancyChart"></canvas>
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Right Column: Data Table and Discussion -->
-                <div class="lg:col-span-2 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <div class="lg:col-span-1 bg-slate-50 p-6 rounded-xl border border-slate-200">
                      <h2 class="text-2xl font-bold text-slate-800 mb-4">Detailed Block-wise Data</h2>
                      <div class="max-h-[400px] overflow-y-auto">
                         <table class="w-full text-left text-slate-600">
@@ -98,7 +98,7 @@
                      </div>
                      <div class="mt-8 bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
                         <h3 class="text-xl font-bold text-slate-800">Strategic Discussion</h3>
-                        <p class="text-slate-600 mt-2">With near-total capacity in A and B blocks, a review of the allocation policy and exploration of expansion possibilities are necessary to meet future demand, as D-Block’s remaining 8 flats serve as the only current buffer.</p>
+                        <p class="text-slate-600 mt-2">Since Blocks A and B are almost full, we need to review our flat allocation policy and look into possible expansion options. Only 8 flats are left in D-Block, which is our current backup.</p>
                     </div>
                 </div>
             </section>
@@ -180,4 +180,3 @@
     </script>
 </body>
 </html>
-
