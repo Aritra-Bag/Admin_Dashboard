@@ -68,8 +68,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             const sheetId = '1hSz0M31duatu5WBhxVwdvwlGZpYt7nYM';
             const gid = '1225016055';
-            const sheetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSgmzbrWw_B6bqf4otS0g3r-rguAH4g5MgYIMhkxrAhXatqjaT1S5o1xARMlbL9ng/pub?gid=1225016055&single=true&output=csv`;
+            const sheetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSgmzbrWw_B6bqf4otS0g3r-rguAH4g5MgYIMhkxrAhXatqjaT1S5o1xARMlbL9ng/pub?output=csv&gid=1225016055`;
             // https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}
+            // https://docs.google.com/spreadsheets/d/e/2PACX-1vSgmzbrWw_B6bqf4otS0g3r-rguAH4g5MgYIMhkxrAhXatqjaT1S5o1xARMlbL9ng/pub?output=csv
+            // https://docs.google.com/spreadsheets/d/e/2PACX-1vSgmzbrWw_B6bqf4otS0g3r-rguAH4g5MgYIMhkxrAhXatqjaT1S5o1xARMlbL9ng/pub?gid=1225016055&single=true&output=csv
             fetch(sheetUrl)
                 .then(response => response.ok ? response.text() : Promise.reject('Network response was not ok.'))
                 .then(csvText => {
