@@ -26,7 +26,7 @@
     <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
         <header class="bg-gradient-to-r from-purple-800 to-purple-900 text-white p-6">
             <h1 class="text-3xl font-extrabold tracking-tight">Guest House Performance Dashboard</h1>
-            <p class="text-purple-200 text-lg mt-1">Recovery & Guest Satisfaction Analysis (Jan - Sep 2025)</p>
+            <p class="text-purple-200 text-lg mt-1">Recovery & Guest Satisfaction Analysis (Apr - Sep 2025)</p>
         </header>
 
         <main class="p-6 md:p-8">
@@ -34,7 +34,7 @@
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Total Recovery (YTD)</h3>
-                    <p class="text-purple-600 text-5xl font-bold mt-2">₹7.86L</p>
+                    <p class="text-purple-600 text-5xl font-bold mt-2">₹6.1L</p>
                     <p class="text-slate-400">From Guest Deductions</p>
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
                     <h3 class="text-slate-500 font-semibold text-lg">Avg. Satisfaction</h3>
-                    <p class="text-green-600 text-5xl font-bold mt-2">98%</p>
+                    <p class="text-green-600 text-5xl font-bold mt-2">99%</p>
                     <p class="text-slate-400">Consistently Excellent</p>
                 </div>
                  <div class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
@@ -74,7 +74,7 @@
                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                      <div class="lg:col-span-2">
                         <h3 class="text-lg font-semibold text-slate-700 mb-2">Monthly Breakdown</h3>
-                        <div class="max-h-80 overflow-y-auto">
+                        <div><!--  class="max-h-80 overflow-y-auto" -->
                             <table class="w-full text-left text-sm">
                                 <thead class="text-slate-700 uppercase bg-slate-200 sticky top-0">
                                     <tr>
@@ -111,9 +111,9 @@
       Chart.register(ChartDataLabels);
 
       const performanceData = [
-          { month: 'Jan', recovery: 35000, feedback: 95 },
-          { month: 'Feb', recovery: 74000, feedback: 96 },
-          { month: 'Mar', recovery: 67000, feedback: 99 },
+        //   { month: 'Jan', recovery: 35000, feedback: 95 },
+        //   { month: 'Feb', recovery: 74000, feedback: 96 },
+        //   { month: 'Mar', recovery: 67000, feedback: 99 },
           { month: 'Apr', recovery: 140000, feedback: 99 },
           { month: 'May', recovery: 120000, feedback: 99 },
           { month: 'Jun', recovery: 120000, feedback: 98 },
@@ -174,4 +174,3 @@
     </script>
 </body>
 </html>
-
