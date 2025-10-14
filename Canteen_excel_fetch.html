@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Recovery Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header class="bg-gradient-to-r from-teal-700 to-teal-900 text-white p-6">
+            <h1 class="text-3xl font-extrabold tracking-tight">Canteen Recovery Dashboard</h1>
+            <p class="text-teal-200 text-lg mt-1">Live Data Analysis: April - September 2025</p>
+        </header>
+
+        <main class="p-6 md:p-8">
+            <section id="kpis" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div id="kpi-total-recovery" class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200"></div>
+                <div id="kpi-top-canteen" class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200"></div>
+                <div id="kpi-peak-month" class="kpi-card bg-slate-50 p-6 rounded-xl border border-slate-200"></div>
+            </section>
+
+            <section class="grid grid-cols-1 gap-8">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4 text-center">Monthly Recovery Breakdown</h2>
+                    <div class="relative h-[450px]">
+                        <canvas id="recoveryChart"></canvas>
+                    </div>
+                     <div id="key-observations" class="mt-6">
+                        </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">Detailed Recovery Data (in ₹)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-slate-600">
+                            <thead id="table-head" class="text-sm text-slate-700 uppercase bg-slate-200 sticky top-0">
+                                </thead>
+                            <tbody id="table-body" class="divide-y divide-slate-200">
+                                </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                         <h3 class="text-xl font-bold text-slate-800">Strategic Insight</h3>
+                         <p id="strategic-insight" class="text-slate-600 mt-2">Overall recovery trends are being analyzed...</p>
+                     </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sheetId = '1hSz0M31duatu5WBhxVwdvwlGZpYt7nYM';
+            const gid = '1225016055';
+            const sheetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSgmzbrWw_B6bqf4otS0g3r-rguAH4g5MgYIMhkxrAhXatqjaT1S5o1xARMlbL9ng/pub?gid=1225016055&single=true&output=csv`;
+            // https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}
+            fetch(sheetUrl)
+                .then(response => response.ok ? response.text() : Promise.reject('Network response was not ok.'))
+                .then(csvText => {
+                    const { headers, data } = parseCSV(csvText);
+                    // Filter out any rows that don't have a valid 'PARTICULARS' entry
+                    const cleanData = data.filter(row => row['PARTICULARS'] && row['PARTICULARS'].trim() !== '');
+                    populateDashboard(headers, cleanData);
+                })
+                .catch(error => {
+                    console.error("Fetch Error:", error);
+                    document.body.innerHTML = `<div class="p-10 text-center text-red-500">Failed to load data from Google Sheet. Please check the URL and ensure the sheet is published.</div>`;
+                });
+        });
+        
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const rawHeaders = lines[0].split(',').slice(1); // Skip SL NO
+            const headers = rawHeaders.map(h => h.trim().replace(/"/g, ''));
+            const data = lines.slice(1)
+                .map(line => {
+                    const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); // Handles commas in numbers
+                    const rowData = {};
+                    headers.forEach((header, index) => {
+                        // index + 1 because we skipped the first column in headers
+                        const value = values[index + 1] ? values[index + 1].trim().replace(/"/g, '') : '';
+                        rowData[header] = value;
+                    });
+                    return rowData;
+                })
+                // Filter out the 'TOTAL AMOUNT' row from the main data array
+                .filter(row => row.PARTICULARS !== 'TOTAL AMOUNT');
+
+            return { headers, data };
+        }
+
+
+        function populateDashboard(headers, data) {
+            const monthHeaders = headers.filter(h => h !== 'PARTICULARS' && !h.includes('TOTAL'));
+            
+            // Clean the data: convert numeric strings to numbers
+            data.forEach(row => {
+                monthHeaders.forEach(month => {
+                    row[month] = parseInt(row[month].replace(/[^0-9]/g, ''), 10) || 0;
+                });
+            });
+            
+            populateTable(monthHeaders, data);
+            createRecoveryChart(monthHeaders, data);
+            populateKPIs(monthHeaders, data);
+            populateInsights(data);
+        }
+
+        function populateTable(months, data) {
+            const tableHead = document.getElementById('table-head');
+            const tableBody = document.getElementById('table-body');
+            tableHead.innerHTML = `<tr><th class="px-4 py-3">Canteen</th>${months.map(m => `<th class="px-4 py-3 text-right">${m}</th>`).join('')}</tr>`;
+            
+            let monthlyTotals = new Array(months.length).fill(0);
+            tableBody.innerHTML = data.map(row => {
+                let rowHtml = `<tr class="hover:bg-slate-100"><td class="px-4 py-3 font-medium">${row.PARTICULARS}</td>`;
+                months.forEach((month, i) => {
+                    const value = row[month] || 0;
+                    monthlyTotals[i] += value;
+                    rowHtml += `<td class="px-4 py-3 text-right">${value.toLocaleString('en-IN')}</td>`;
+                });
+                return rowHtml + '</tr>';
+            }).join('');
+
+            // Add Total Row
+            const totalRowHtml = `<tr class="bg-slate-200 font-bold text-slate-800"><td class="px-4 py-3">TOTAL</td>${monthlyTotals.map(total => `<td class="px-4 py-3 text-right">${total.toLocaleString('en-IN')}</td>`).join('')}</tr>`;
+            tableBody.innerHTML += totalRowHtml;
+        }
+        
+        function populateKPIs(months, data) {
+            // 1. Total Recovery
+            const totalRecovery = data.reduce((total, row) => total + months.reduce((sum, month) => sum + row[month], 0), 0);
+            document.getElementById('kpi-total-recovery').innerHTML = `
+                <h3 class="text-slate-500 font-semibold text-lg">Total Recovery</h3>
+                <p class="text-teal-600 text-4xl font-bold mt-2">₹${(totalRecovery / 10000000).toFixed(2)}Cr</p>
+                <p class="text-slate-400">Across all units (${months[0]}-${months[months.length-1]})</p>`;
+
+            // 2. Top Performing Canteen
+            data.forEach(row => row.total = months.reduce((sum, month) => sum + row[month], 0));
+            const topCanteen = [...data].sort((a,b) => b.total - a.total)[0];
+            document.getElementById('kpi-top-canteen').innerHTML = `
+                <h3 class="text-slate-500 font-semibold text-lg">Top Performing Unit</h3>
+                <p class="text-teal-600 text-4xl font-bold mt-2 truncate">${topCanteen.PARTICULARS}</p>
+                <p class="text-slate-400">₹${(topCanteen.total / 100000).toFixed(2)}L total contribution</p>`;
+
+            // 3. Peak Recovery Month
+            const monthlyTotals = months.map(month => data.reduce((sum, row) => sum + row[month], 0));
+            const maxRecovery = Math.max(...monthlyTotals);
+            const peakMonth = months[monthlyTotals.indexOf(maxRecovery)];
+             document.getElementById('kpi-peak-month').innerHTML = `
+                <h3 class="text-slate-500 font-semibold text-lg">Peak Recovery Month</h3>
+                <p class="text-teal-600 text-4xl font-bold mt-2">${peakMonth}</p>
+                <p class="text-slate-400">Reached a high of ₹${(maxRecovery / 100000).toFixed(2)}L</p>`;
+        }
+
+        function populateInsights(data) {
+            const observations = document.getElementById('key-observations');
+            const topCanteen = data.find(d => d.PARTICULARS.includes('SEAMLESS'));
+            const labourHousing = data.find(d => d.PARTICULARS.includes('LABOUR HOUSING'));
+            const rml1 = data.find(d => d.PARTICULARS.includes('RML1 DIP'));
+            
+            const totalRecovery = data.reduce((sum, d) => sum + d.total, 0);
+            const topCanteenPercent = ((topCanteen.total / totalRecovery) * 100).toFixed(0);
+
+            observations.innerHTML = `
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Key Observations</h3>
+                <ul class="space-y-3 text-slate-600">
+                    <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">▲</span><strong>Sustained Growth:</strong> '${labourHousing.PARTICULARS}' shows impressive, consistent growth over the period.</li>
+                    <li class="flex items-start"><span class="text-yellow-500 mr-3 mt-1">⟷</span><strong>Major Rebound:</strong> After a sharp decline, '${rml1.PARTICULARS}' recovery bounced back significantly in August.</li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-3 mt-1">●</span><strong>Dominant Contributor:</strong> '${topCanteen.PARTICULARS}' remains the largest source of recovery, contributing ${topCanteenPercent}% of the total revenue.</li>
+                </ul>`;
+            
+            const monthlyTotals = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'].map(month => data.reduce((sum, row) => sum + row[month], 0));
+            const peakMonth = 'August';
+            const dipMonth = 'September';
+             document.getElementById('strategic-insight').textContent = `Overall recovery peaked in ${peakMonth}, driven mainly by higher contributions from Labour Housing and Seamless units. However, ${dipMonth} saw a noticeable dip, indicating a need to address declining recoveries in other key units.`;
+        }
+
+        function createRecoveryChart(months, data) {
+            const colors = ['#38bdf8', '#34d399', '#f87171', '#fbbf24', '#a78bfa'];
+            const datasets = data.map((row, index) => ({
+                label: row.PARTICULARS,
+                data: months.map(month => row[month]),
+                backgroundColor: colors[index % colors.length]
+            }));
+
+            const config = {
+                type: 'bar',
+                data: { labels: months, datasets: datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'point', intersect: true },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ₹${c.parsed.y.toLocaleString('en-IN')}` } }
+                    },
+                    scales: {
+                        x: { stacked: true, grid: { display: false } },
+                        y: {
+                            stacked: true, beginAtZero: true, grid: { color: '#e2e8f0' },
+                            ticks: { callback: (v) => v >= 1000000 ? `₹${(v/1000000).toFixed(1)}M` : `₹${v/1000}K` }
+                        }
+                    }
+                }
+            };
+            const ctx = document.getElementById('recoveryChart').getContext('2d');
+            new Chart(ctx, config);
+        }
+    </script>
+</body>
+</html>
